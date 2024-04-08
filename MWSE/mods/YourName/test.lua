@@ -270,5 +270,7 @@ do
     end
 end
 
+-- test filtering
+-- test memory
 
 unitwind:finish()

@@ -1,9 +1,61 @@
 local this = {}
 local logger = require("YourName.logger")
 
--- TODO
+-- Creatures have many of the same names with different IDs, but we do not expect to mask them very well, so we will limit ourselves to important them only.
+-- Persistence corpses are not included because there is basically no way to know their names.
 local alias = {
-    ["dagoth_ur_2"] = "dagoth_ur_1", -- in combat
+    -- guard
+    ["hlaalu guard_outside"] = "hlaalu guard", -- Hlaalu Guard
+    ["redoran guard sarethi1"] = "redoran guard male", -- Redoran Guard (dead)
+    ["redoran guard sarethi2"] = "redoran guard male", -- Redoran Guard (dead)
+    ["redoran guard sarethi3"] = "redoran guard male", -- Redoran Guard
+    ["redoran guard sarethi4"] = "redoran guard female", -- Redoran Guard
+    ["redoran guard_Andasreth"] = "redoran guard male", -- Redoran Guard
+    ["telvanni guard_stand"] = "telvanni guard", -- Telvanni Guard
+    ["Imperial Guard_company"] = "Imperial Guard", -- Guard
+    ["Imperial Guard_ebonhear"] = "Imperial Guard", -- Guard
+    ["Imperial Guard_prisoner"] = "Imperial Guard", -- Guard
+    ["chargen boat guard 1"] = "Imperial Guard", -- Guard
+    ["chargen boat guard 2"] = "Imperial Guard", -- Guard
+    ["chargen boat guard 3"] = "Imperial Guard", -- Guard
+    ["chargen dock guard"] = "Imperial Guard", -- Guard
+    ["Duke's Guard_tomb"] = "Duke's Guard", -- Duke's Guard
+    ["Duke's Guard_tomb2"] = "Duke's Guard", -- Duke's Guard
+    ["ordinator stationary"] = "ordinator wander", -- Ordinator
+    ["ordinator_high fane"] = "ordinator wander", -- Ordinator
+    ["ordinator_wander_hvault"] = "ordinator wander", -- Ordinator
+    ["ordinator_wander_tvault"] = "ordinator wander", -- Ordinator
+    ["ordinator wander_hp"] = "ordinator wander", -- Ordinator
+    ["ordinator wander_ilpe_1"] = "ordinator wander", -- Ordinator
+    ["ordinator wander_ilpe_2"] = "ordinator wander", -- Ordinator
+    ["dreamer_f_01"] = "dreamer", -- Dreamer
+    ["dreamer_02"] = "dreamer", -- Dreamer
+    ["dreamer_f_key"] = "dreamer", -- Dreamer
+    ["dreamer_ranged"] = "dreamer", -- Dreamer
+    ["dreamer_04"] = "dreamer", -- Dreamer
+    ["dreamer_05"] = "dreamer", -- Dreamer
+    ["dreamer_06"] = "dreamer", -- Dreamer
+    ["Dreamer_Talker"] = "dreamer", -- Dreamer
+    ["Dreamer_Talker01"] = "dreamer", -- Dreamer
+    ["Dreamer_Talker02"] = "dreamer", -- Dreamer
+    ["Dreamer_Talker03"] = "dreamer", -- Dreamer
+    ["Dreamer_Talker04"] = "dreamer", -- Dreamer
+    ["Dreamer_Talker05"] = "dreamer", -- Dreamer
+    ["Dreamer_Talker06"] = "dreamer", -- Dreamer
+    ["Dreamer_Talker07"] = "dreamer", -- Dreamer
+    ["Dreamer_Talker08"] = "dreamer", -- Dreamer
+    ["Dreamer_Talker09"] = "dreamer", -- Dreamer
+    ["Dreamer_Talker10"] = "dreamer", -- Dreamer
+    ["Dreamer_Talker11"] = "dreamer", -- Dreamer
+    ["Dreamer_Talker12"] = "dreamer", -- Dreamer
+    -- creature
+    ["dagoth_ur_2"] = "dagoth_ur_1", -- Dagoth Ur
+    ["almalexia_warrior"] = "almalexia", -- Almalexia
+    ["glenmoril_witch_cave"] = "glenmoril_raven", -- Ettiene of Glenmoril Wyrd
+    ["glenmoril_witch_altar"] = "glenmoril_raven", -- Ettiene of Glenmoril Wyrd
+    ["glenmoril_witch_altar_2"] = "glenmoril_raven", -- Ettiene of Glenmoril Wyrd
+    ["glenmoril_raven_cave"] = "glenmoril_raven", -- Ettiene of Glenmoril Wyrd
+    ["BM_hircine2"] = "BM_hircine", -- Hircine
 }
 
 ---@class Record

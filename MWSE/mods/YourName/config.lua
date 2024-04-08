@@ -7,7 +7,7 @@ local defaultConfig = {
         essential = true,
         creature = true,
         -- follower = false, -- possible?
-        -- corpse = false, -- exists?
+        -- corpse = false, -- how to get corpses persist flag?
     },
     ---@class Config.Masking
     masking = {
@@ -35,7 +35,7 @@ local config = nil ---@type Config
 
 ---@return Config
 local function Load()
-    config = config or mwse.loadConfig(settings, defaultConfig)
+    config = config or mwse.loadConfig(settings.configPath, defaultConfig)
     return config
 end
 
