@@ -5,9 +5,9 @@ local defaultConfig = {
     filtering = {
         guard = true,
         essential = true,
+        corpse = false,
         creature = true,
-        -- follower = false, -- possible?
-        -- corpse = false, -- how to get corpses persist flag?
+        -- follower = false, -- possible? from AI parameter? --
     },
     ---@class Config.Masking
     masking = {

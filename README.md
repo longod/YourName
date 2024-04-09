@@ -7,3 +7,5 @@ How do you know the names of all the dwellers on this first unknown island you a
 - The name is revealed only when he or she identifies himself or herself. If another person mentions that person, Outlander will not recognize him or her.
 - Outlander may talk about the person in his/her diary even though he/she does not yet know the person's name.
 - Sometimes people do not even give their own names completely. Their names remain partially or completely unknown.
+- Dead men tell no tales.
+- It has not been tested except in the English version, so it won't work well.

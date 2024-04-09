@@ -28,7 +28,9 @@ local function OnModConfigReady(e)
         buttonText = "Forget",
         label = "all names",
         description = "only in game",
-        callback = function() end,
+        callback = function()
+            -- TODO
+        end,
         inGameOnly = true
     })
 
@@ -50,6 +52,14 @@ local function OnModConfigReady(e)
             description = "",
             variable = mwse.mcm.createTableVariable({
                 id = "essential",
+                table = config.filtering,
+            })
+        })
+        filter:createOnOffButton({
+            label = "Corpse",
+            description = "",
+            variable = mwse.mcm.createTableVariable({
+                id = "corpse",
                 table = config.filtering,
             })
         })

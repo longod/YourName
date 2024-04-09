@@ -4,13 +4,13 @@ local logger = require("YourName.logger")
 -- Creatures have many of the same names with different IDs, but we do not expect to mask them very well, so we will limit ourselves to important them only.
 -- Persistence corpses are not included because there is basically no way to know their names.
 local alias = {
-    -- guard
+    -- NPC
     ["hlaalu guard_outside"] = "hlaalu guard", -- Hlaalu Guard
     ["redoran guard sarethi1"] = "redoran guard male", -- Redoran Guard (dead)
     ["redoran guard sarethi2"] = "redoran guard male", -- Redoran Guard (dead)
     ["redoran guard sarethi3"] = "redoran guard male", -- Redoran Guard
     ["redoran guard sarethi4"] = "redoran guard female", -- Redoran Guard
-    ["redoran guard_Andasreth"] = "redoran guard male", -- Redoran Guard
+    ["redoran guard_Andasreth"] = "redoran guard male", -- Redoran Guard (dead)
     ["telvanni guard_stand"] = "telvanni guard", -- Telvanni Guard
     ["Imperial Guard_company"] = "Imperial Guard", -- Guard
     ["Imperial Guard_ebonhear"] = "Imperial Guard", -- Guard
@@ -48,7 +48,30 @@ local alias = {
     ["Dreamer_Talker10"] = "dreamer", -- Dreamer
     ["Dreamer_Talker11"] = "dreamer", -- Dreamer
     ["Dreamer_Talker12"] = "dreamer", -- Dreamer
+    ["db_assassin2"] = "db_assassin1", -- Assassin
+    ["db_assassin3"] = "db_assassin1", -- Assassin
+    ["db_assassin4"] = "db_assassin1", -- Assassin
+    ["db_assassin1b"] = "db_assassin1", -- Assassin
+    ["hels_assassin2"] = "hels_assassin1", -- Assassin
+    ["hels_assassin3"] = "hels_assassin1", -- Assassin
+    ["Guard_Helseth_attack"] = "Guard_Helseth", -- Royal Guard
+    ["royal guard_karrod"] = "Guard_Helseth", -- Royal Guard
+    ["skaal_guard2"] = "skaal_guard", -- Skaal Honor Guard
+    ["skaal_guard_A1"] = "skaal_guard", -- Skaal Honor Guard
+    ["skaal_guard_A2"] = "skaal_guard", -- Skaal Honor Guard
+    ["skaal_guard_A3"] = "skaal_guard", -- Skaal Honor Guard
+    ["skaal_guard_A4"] = "skaal_guard", -- Skaal Honor Guard
+    ["skaal_hunter2"] = "skaal_hunter", -- Skaal Hunter
+    ["skaal_tracker2"] = "skaal_tracker", -- Skaal Tracker
+    ["skaal_tracker3"] = "skaal_tracker", -- Skaal Tracker
+    ["Bryngrim_b"] = "Bryngrim", -- Bryngrim
+    ["falx carius2"] = "falx carius", -- Captain Falx Carius
+    ["tharsten heart-fang2"] = "tharsten heart-fang", -- Tharsten Heart-Fang
+    ["svenja_outside"] = "svenja snow-song", -- Svenja Snow-Song
+    ["thormoor_thirsk"] = "thormoor gray-wave", -- Thormoor Gray-Wave
+    ["thormoor_out"] = "thormoor gray-wave", -- Thormoor Gray-Wave
     -- creature
+    ["ancestor_ghost_vabdas"] = "mansilamat vabdas", -- Mansilamat Vabdas
     ["dagoth_ur_2"] = "dagoth_ur_1", -- Dagoth Ur
     ["almalexia_warrior"] = "almalexia", -- Almalexia
     ["glenmoril_witch_cave"] = "glenmoril_raven", -- Ettiene of Glenmoril Wyrd
