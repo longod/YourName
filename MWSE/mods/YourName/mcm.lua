@@ -26,10 +26,12 @@ local function OnModConfigReady(e)
 
     page:createButton({
         buttonText = "Forget",
-        label = "all names",
+        label = "everyone's name",
         description = "only in game",
         callback = function()
-            -- TODO
+            if require("YourName.memory").ClearMemory() then
+		        tes3.messageBox { message = "Succeeded in forgetting everyone's name.", buttons = { tes3.findGMST(tes3.gmst.sOK).value --[[@as string]] } }
+            end
         end,
         inGameOnly = true
     })
@@ -64,7 +66,7 @@ local function OnModConfigReady(e)
             })
         })
         filter:createOnOffButton({
-            label = "Creature",
+            label = "Talking Creature",
             description = "",
             variable = mwse.mcm.createTableVariable({
                 id = "creature",

@@ -91,6 +91,17 @@ local mockData = {
     records = {},
 }
 
+-- get aliased id
+---@param id string
+function this.GetAliasedID(id)
+    local a = alias[id]
+    if a ~= nil then
+        logger:trace("%s alias to %s", id, a)
+        return a
+    end
+    return id
+end
+
 ---@return Memory
 function this.GetMemory()
     if tes3.onMainMenu() == false and tes3.player and tes3.player.data then
@@ -103,15 +114,21 @@ function this.GetMemory()
     return mockData
 end
 
--- get aliased id
----@param id string
-function this.GetAliasedID(id)
-    local a = alias[id]
-    if a ~= nil then
-        logger:trace("%s alias to %s", id, a)
-        return a
+---@return boolean
+function this.ClearMemory()
+    if tes3.onMainMenu() == false and tes3.player and tes3.player.data then
+        if tes3.player.data.yourName ~= nil then
+            tes3.player.data.yourName = nil
+            logger:info("clear memory")
+            return true
+        end
+        return false
     end
-    return id
+    mockData = {
+        records = {},
+    }
+    logger:debug("Clear mock memory")
+    return false
 end
 
 ---@param id string

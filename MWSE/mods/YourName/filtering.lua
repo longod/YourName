@@ -260,7 +260,7 @@ local filter = {
     ["lich_relvel"] = false,
     ["lich_barilzar"] = false,
     ["ancestor_ghost_Variner"] = false,
-    ["dwarven ghost_radac"] = true,
+    ["dwarven ghost_radac"] = true, -- Radac Stungnthumz
     ["dremora_lord_khash_uni"] = false,
     ---- bloodmoon
     ["glenmoril_raven"] = true,

@@ -9,9 +9,10 @@ local unitwind = require("unitwind").new({
 })
 
 unitwind:start("Your Name")
-unitwind:mock(tes3, "player", {
-    data = {},
-})
+-- mock outside of test remains until explicitly unmocked
+-- unitwind:mock(tes3, "player", {
+--     data = {},
+-- })
 do
     local unknown = masking.unknown
     local testSource = {
@@ -270,7 +271,23 @@ do
     end
 end
 
--- test filtering
--- test memory
 
+-- GetAliasedID
+-- GetMemory
+-- ClearMemory
+-- ReadMemory
+-- WriteMemory
+
+-- IsTarget
+do
+    ---@type Config.Filtering
+    local config = {
+        guard = false,
+        essential = false,
+        corpse = false,
+        creature = false,
+    }
+end
+
+--unitwind:unmock(tes3, "player")
 unitwind:finish()
