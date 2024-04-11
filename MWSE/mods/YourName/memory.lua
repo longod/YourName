@@ -104,7 +104,7 @@ end
 
 ---@return Memory
 function this.GetMemory()
-    if tes3.onMainMenu() == false and tes3.player and tes3.player.data then
+    if tes3.player and tes3.player.data then
         if tes3.player.data.yourName == nil then
             tes3.player.data.yourName = { records = {} } ---@type Memory
         end
@@ -116,7 +116,7 @@ end
 
 ---@return boolean
 function this.ClearMemory()
-    if tes3.onMainMenu() == false and tes3.player and tes3.player.data then
+    if tes3.player and tes3.player.data then
         if tes3.player.data.yourName ~= nil then
             tes3.player.data.yourName = nil
             logger:info("clear memory")
@@ -147,15 +147,18 @@ end
 
 ---@param id string
 ---@param mask integer
+---@return boolean newrecord
 function this.WriteMemory(id, mask)
     local memory = this.GetMemory()
     id = this.GetAliasedID(id)
     if memory.records[id] ~= nil then
         logger:trace("update: %s = %x", id, mask)
         memory.records[id].mask = mask
+        return false
     else
         logger:trace("new: %s = %x", id, mask)
         memory.records[id] = { mask = mask }
+        return true
     end
 end
 

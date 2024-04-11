@@ -300,9 +300,12 @@ function this.IsTarget(actor, config)
         end
         -- implicit true
         local f = filter[memo.GetAliasedID(actor.id)]
+        logger:trace("%s is deny list: %s", actor.id, tostring(f))
         return (f == nil) or (f == true)
     elseif actor.objectType == tes3.objectType.creature and config.creature == false then
         -- only special creatures
+        local f = filter[memo.GetAliasedID(actor.id)]
+        logger:trace("%s is allow list: %s", actor.id, tostring(f))
         return (filter[memo.GetAliasedID(actor.id)] == true)
     end
     return false

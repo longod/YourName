@@ -1,6 +1,8 @@
 
 local config = require("YourName.config")
 local masking = require("YourName.masking")
+local filtering = require("YourName.filtering")
+local memo = require("YourName.memory")
 
 local unitwind = require("unitwind").new({
     enabled = config.development.test,
@@ -9,10 +11,7 @@ local unitwind = require("unitwind").new({
 })
 
 unitwind:start("Your Name")
--- mock outside of test remains until explicitly unmocked
--- unitwind:mock(tes3, "player", {
---     data = {},
--- })
+
 do
     local unknown = masking.unknown
     local testSource = {
@@ -271,23 +270,221 @@ do
     end
 end
 
+unitwind:test("GetAliasedID", function()
+    unitwind:expect(memo.GetAliasedID("dagoth_ur_1")).toBe("dagoth_ur_1")
+    unitwind:expect(memo.GetAliasedID("dagoth_ur_2")).toBe("dagoth_ur_1")
+    unitwind:expect(memo.GetAliasedID("dagoth_ur_3")).toBe("dagoth_ur_3")
+end)
 
--- GetAliasedID
--- GetMemory
--- ClearMemory
--- ReadMemory
--- WriteMemory
+unitwind:test("GetMemory", function()
+    unitwind:expect(tes3.player).toBe(nil)
+    local mockData = memo.GetMemory()
+    unitwind:expect(mockData).NOT.toBe(nil) -- mockData
+    unitwind:expect(mockData.records).toBeType("table")
+
+    unitwind:mock(tes3, "player", {
+        data = {},
+    })
+    unitwind:expect(tes3.player.data).NOT.toBe(nil)
+    local data = memo.GetMemory()
+    unitwind:expect(data).NOT.toBe(nil) -- persistent data (still mock)
+    unitwind:expect(data.records).toBeType("table")
+    unitwind:expect(data).NOT.toBe(mockData)
+
+    unitwind:unmock(tes3, "player")
+    unitwind:expect(tes3.player).toBe(nil)
+end)
+
+unitwind:test("ClearMemory", function()
+    unitwind:expect(tes3.player).toBe(nil)
+    unitwind:expect(memo.ClearMemory()).toBe(false)
+
+    local mockData = memo.GetMemory()
+    mockData.records["test"] = { mask = 1 }
+    unitwind:expect(memo.ClearMemory()).toBe(false)
+    mockData = memo.GetMemory()
+    unitwind:expect(mockData.records).toBeType("table")
+    unitwind:expect(mockData.records["test"]).toBe(nil)
+
+    unitwind:mock(tes3, "player", {
+        data = {},
+    })
+
+    local data = memo.GetMemory()
+    data.records["test"] = { mask = 2 }
+    unitwind:expect(memo.ClearMemory()).toBe(true)
+    data = memo.GetMemory()
+    unitwind:expect(data.records).toBeType("table")
+    unitwind:expect(data.records["test"]).toBe(nil)
+
+    unitwind:unmock(tes3, "player")
+end)
+
+unitwind:test("ReadWriteMemory", function()
+    unitwind:mock(tes3, "player", {
+        data = {},
+    })
+    local id = "dagoth_ur_2"
+    unitwind:expect(memo.ReadMemory(id)).toBe(nil)
+
+    unitwind:expect(memo.WriteMemory(id, 0x3)).toBe(true)
+    local record = memo.ReadMemory(id)
+    unitwind:expect(record).NOT.toBe(nil)
+    unitwind:expect(record).toBeType("table")
+    if record then
+        unitwind:expect(record.mask).toBe(0x3)
+    end
+
+    unitwind:expect(memo.WriteMemory(id, 0x1)).toBe(false)
+    record = memo.ReadMemory(id)
+    unitwind:expect(record).NOT.toBe(nil)
+    unitwind:expect(record).toBeType("table")
+    if record then
+        unitwind:expect(record.mask).toBe(0x1)
+    end
+
+    unitwind:unmock(tes3, "player")
+end)
 
 -- IsTarget
 do
-    ---@type Config.Filtering
-    local config = {
-        guard = false,
-        essential = false,
-        corpse = false,
-        creature = false,
-    }
+    unitwind:test("IsTarget invalid coverage", function()
+        local f = {
+            essential = false,
+            corpse = false,
+            guard = false,
+            creature = false,
+        } ---@type Config.Filtering
+        unitwind:expect(filtering.IsTarget(nil, f)).toBe(false) -- nil
+
+        local actor = {
+            id = "invalid",
+            isEssential = false,
+            persistent = false,
+            isGuard = false,
+            objectType = tes3.objectType.weapon,
+        }
+        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- objectType
+        actor.isGuard = true
+        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- still objectType
+        actor.persistent = true
+        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- corpse
+        actor.isEssential = true
+        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- essential
+    end)
+
+    unitwind:test("IsTarget creature coverage", function()
+        local f = {
+            essential = false,
+            corpse = false,
+            guard = false,
+            creature = false,
+        } ---@type Config.Filtering
+        unitwind:expect(filtering.IsTarget(nil, f)).toBe(false)
+        local actor = {
+            id = "unknown",
+            isEssential = false,
+            persistent = false,
+            isGuard = false,
+            objectType = tes3.objectType.creature,
+        }
+        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- id no list
+        actor.id = "bm_frost_giant"
+        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- id false
+        actor.id = "almalexia"
+        unitwind:expect(filtering.IsTarget(actor, f)).toBe(true) -- id true
+        actor.isGuard = true
+        unitwind:expect(filtering.IsTarget(actor, f)).toBe(true) -- no guard
+        actor.persistent = true
+        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- corpse
+        actor.isEssential = true
+        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- essential
+    end)
+
+    unitwind:test("IsTarget NPC coverage", function()
+        local f = {
+            essential = false,
+            corpse = false,
+            guard = false,
+            creature = false,
+        } ---@type Config.Filtering
+        unitwind:expect(filtering.IsTarget(nil, f)).toBe(false)
+        local actor = {
+            id = "unknown",
+            isEssential = false,
+            persistent = false,
+            isGuard = false,
+            objectType = tes3.objectType.npc,
+        }
+        unitwind:expect(filtering.IsTarget(actor, f)).toBe(true) -- id no list
+        actor.id = "dreamer"
+        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- id false
+        actor.id = "dagoth_ur_1"
+        unitwind:expect(filtering.IsTarget(actor, f)).toBe(true) -- id true
+        actor.isGuard = true
+        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- guard
+        actor.persistent = true
+        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- corpse
+        actor.isEssential = true
+        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- essential
+    end)
+
+    unitwind:test("IsTarget creature config", function()
+        local f = {
+            essential = true,
+            corpse = true,
+            guard = true,
+            creature = true,
+        } ---@type Config.Filtering
+        unitwind:expect(filtering.IsTarget(nil, f)).toBe(false)
+        local actor = {
+            id = "vivec_god",
+            isEssential = true,
+            persistent = true,
+            isGuard = true,
+            objectType = tes3.objectType.creature,
+        }
+        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false)
+        f.creature = false
+        unitwind:expect(filtering.IsTarget(actor, f)).toBe(true) -- id
+        f.guard = false
+        unitwind:expect(filtering.IsTarget(actor, f)).toBe(true) -- no guard
+        f.corpse = false
+        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- corpse
+        f.corpse = true
+        f.essential = false
+        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- essential
+    end)
+
+    unitwind:test("IsTarget NPC config", function()
+        local f = {
+            essential = true,
+            corpse = true,
+            guard = true,
+            creature = true,
+        } ---@type Config.Filtering
+        unitwind:expect(filtering.IsTarget(nil, f)).toBe(false)
+        local actor = {
+            id = "jiub", -- no listed
+            isEssential = true,
+            persistent = true,
+            isGuard = true,
+            objectType = tes3.objectType.npc,
+        }
+        unitwind:expect(filtering.IsTarget(actor, f)).toBe(true) -- id
+        f.creature = false
+        unitwind:expect(filtering.IsTarget(actor, f)).toBe(true) -- no creature
+        f.guard = false
+        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- guard
+        f.guard = true
+        f.corpse = false
+        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- corpse
+        f.corpse = true
+        f.essential = false
+        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- essential
+    end)
 end
 
---unitwind:unmock(tes3, "player")
+-- clearMocks() in finish() uses pairs to unmock, but if value is nil, lua will not iterate that element, so it will not be unmocked completely.
+-- Specifically, tes3.player does not return to nil unless unmock() instead of clearMocks().
 unitwind:finish()
