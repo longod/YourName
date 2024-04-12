@@ -346,145 +346,141 @@ unitwind:test("ReadWriteMemory", function()
     unitwind:unmock(tes3, "player")
 end)
 
--- IsTarget
-do
-    unitwind:test("IsTarget invalid coverage", function()
-        local f = {
-            essential = false,
-            corpse = false,
-            guard = false,
-            creature = false,
-        } ---@type Config.Filtering
-        unitwind:expect(filtering.IsTarget(nil, f)).toBe(false) -- nil
+unitwind:test("IsTarget invalid coverage", function()
+    local f = {
+        essential = false,
+        corpse = false,
+        guard = false,
+        creature = false,
+    } ---@type Config.Filtering
+    unitwind:expect(filtering.IsTarget(nil, f)).toBe(false) -- nil
 
-        local actor = {
-            id = "invalid",
-            isEssential = false,
-            persistent = false,
-            isGuard = false,
-            objectType = tes3.objectType.weapon,
-        }
-        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- objectType
-        actor.isGuard = true
-        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- still objectType
-        actor.persistent = true
-        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- corpse
-        actor.isEssential = true
-        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- essential
-    end)
+    local actor = {
+        id = "invalid",
+        isEssential = false,
+        persistent = false,
+        isGuard = false,
+        objectType = tes3.objectType.weapon,
+    }
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- objectType
+    actor.isGuard = true
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- still objectType
+    actor.persistent = true
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- corpse
+    actor.isEssential = true
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- essential
+end)
 
-    unitwind:test("IsTarget creature coverage", function()
-        local f = {
-            essential = false,
-            corpse = false,
-            guard = false,
-            creature = false,
-        } ---@type Config.Filtering
-        unitwind:expect(filtering.IsTarget(nil, f)).toBe(false)
-        local actor = {
-            id = "unknown",
-            isEssential = false,
-            persistent = false,
-            isGuard = false,
-            objectType = tes3.objectType.creature,
-        }
-        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- id no list
-        actor.id = "bm_frost_giant"
-        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- id false
-        actor.id = "almalexia"
-        unitwind:expect(filtering.IsTarget(actor, f)).toBe(true) -- id true
-        actor.isGuard = true
-        unitwind:expect(filtering.IsTarget(actor, f)).toBe(true) -- no guard
-        actor.persistent = true
-        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- corpse
-        actor.isEssential = true
-        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- essential
-    end)
+unitwind:test("IsTarget creature coverage", function()
+    local f = {
+        essential = false,
+        corpse = false,
+        guard = false,
+        creature = false,
+    } ---@type Config.Filtering
+    unitwind:expect(filtering.IsTarget(nil, f)).toBe(false)
+    local actor = {
+        id = "unknown",
+        isEssential = false,
+        persistent = false,
+        isGuard = false,
+        objectType = tes3.objectType.creature,
+    }
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- id no list
+    actor.id = "bm_frost_giant"
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- id false
+    actor.id = "almalexia"
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(true)  -- id true
+    actor.isGuard = true
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(true)  -- no guard
+    actor.persistent = true
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- corpse
+    actor.isEssential = true
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- essential
+end)
 
-    unitwind:test("IsTarget NPC coverage", function()
-        local f = {
-            essential = false,
-            corpse = false,
-            guard = false,
-            creature = false,
-        } ---@type Config.Filtering
-        unitwind:expect(filtering.IsTarget(nil, f)).toBe(false)
-        local actor = {
-            id = "unknown",
-            isEssential = false,
-            persistent = false,
-            isGuard = false,
-            objectType = tes3.objectType.npc,
-        }
-        unitwind:expect(filtering.IsTarget(actor, f)).toBe(true) -- id no list
-        actor.id = "dreamer"
-        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- id false
-        actor.id = "dagoth_ur_1"
-        unitwind:expect(filtering.IsTarget(actor, f)).toBe(true) -- id true
-        actor.isGuard = true
-        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- guard
-        actor.persistent = true
-        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- corpse
-        actor.isEssential = true
-        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- essential
-    end)
+unitwind:test("IsTarget NPC coverage", function()
+    local f = {
+        essential = false,
+        corpse = false,
+        guard = false,
+        creature = false,
+    } ---@type Config.Filtering
+    unitwind:expect(filtering.IsTarget(nil, f)).toBe(false)
+    local actor = {
+        id = "unknown",
+        isEssential = false,
+        persistent = false,
+        isGuard = false,
+        objectType = tes3.objectType.npc,
+    }
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(true)  -- id no list
+    actor.id = "dreamer"
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- id false
+    actor.id = "dagoth_ur_1"
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(true)  -- id true
+    actor.isGuard = true
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- guard
+    actor.persistent = true
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- corpse
+    actor.isEssential = true
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- essential
+end)
 
-    unitwind:test("IsTarget creature config", function()
-        local f = {
-            essential = true,
-            corpse = true,
-            guard = true,
-            creature = true,
-        } ---@type Config.Filtering
-        unitwind:expect(filtering.IsTarget(nil, f)).toBe(false)
-        local actor = {
-            id = "vivec_god",
-            isEssential = true,
-            persistent = true,
-            isGuard = true,
-            objectType = tes3.objectType.creature,
-        }
-        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false)
-        f.creature = false
-        unitwind:expect(filtering.IsTarget(actor, f)).toBe(true) -- id
-        f.guard = false
-        unitwind:expect(filtering.IsTarget(actor, f)).toBe(true) -- no guard
-        f.corpse = false
-        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- corpse
-        f.corpse = true
-        f.essential = false
-        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- essential
-    end)
+unitwind:test("IsTarget creature config", function()
+    local f = {
+        essential = true,
+        corpse = true,
+        guard = true,
+        creature = true,
+    } ---@type Config.Filtering
+    unitwind:expect(filtering.IsTarget(nil, f)).toBe(false)
+    local actor = {
+        id = "vivec_god",
+        isEssential = true,
+        persistent = true,
+        isGuard = true,
+        objectType = tes3.objectType.creature,
+    }
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false)
+    f.creature = false
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(true)  -- id
+    f.guard = false
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(true)  -- no guard
+    f.corpse = false
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- corpse
+    f.corpse = true
+    f.essential = false
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- essential
+end)
 
-    unitwind:test("IsTarget NPC config", function()
-        local f = {
-            essential = true,
-            corpse = true,
-            guard = true,
-            creature = true,
-        } ---@type Config.Filtering
-        unitwind:expect(filtering.IsTarget(nil, f)).toBe(false)
-        local actor = {
-            id = "jiub", -- no listed
-            isEssential = true,
-            persistent = true,
-            isGuard = true,
-            objectType = tes3.objectType.npc,
-        }
-        unitwind:expect(filtering.IsTarget(actor, f)).toBe(true) -- id
-        f.creature = false
-        unitwind:expect(filtering.IsTarget(actor, f)).toBe(true) -- no creature
-        f.guard = false
-        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- guard
-        f.guard = true
-        f.corpse = false
-        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- corpse
-        f.corpse = true
-        f.essential = false
-        unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- essential
-    end)
-end
-
+unitwind:test("IsTarget NPC config", function()
+    local f = {
+        essential = true,
+        corpse = true,
+        guard = true,
+        creature = true,
+    } ---@type Config.Filtering
+    unitwind:expect(filtering.IsTarget(nil, f)).toBe(false)
+    local actor = {
+        id = "jiub",     -- no listed
+        isEssential = true,
+        persistent = true,
+        isGuard = true,
+        objectType = tes3.objectType.npc,
+    }
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(true)  -- id
+    f.creature = false
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(true)  -- no creature
+    f.guard = false
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- guard
+    f.guard = true
+    f.corpse = false
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- corpse
+    f.corpse = true
+    f.essential = false
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- essential
+end)
 -- clearMocks() in finish() uses pairs to unmock, but if value is nil, lua will not iterate that element, so it will not be unmocked completely.
 -- Specifically, tes3.player does not return to nil unless unmock() instead of clearMocks().
 unitwind:finish()

@@ -27,7 +27,7 @@ local function OnModConfigReady(e)
     page:createButton({
         buttonText = "Forget",
         label = "everyone's name",
-        description = "only in game",
+        description = "Clear information recorded with the names of the people you have been in contact with. This feature is in-game only.",
         callback = function()
             if require("YourName.memory").ClearMemory() then
 		        tes3.messageBox { message = "Succeeded in forgetting everyone's name.", buttons = { tes3.findGMST(tes3.gmst.sOK).value --[[@as string]] } }
@@ -38,20 +38,12 @@ local function OnModConfigReady(e)
 
     do
         local filter = page:createCategory({
-            label = "Filter",
-            description = "",
-        })
-        filter:createOnOffButton({
-            label = "Guard",
-            description = "",
-            variable = mwse.mcm.createTableVariable({
-                id = "guard",
-                table = config.filtering,
-            })
+            label = "Target Group",
+            description = "Control who it applies to. Also as a general rule, it does not apply to those who do not have unique names.",
         })
         filter:createOnOffButton({
             label = "Essential",
-            description = "",
+            description = "Applies to NPCs with the essential.Many of them will identify themselves, but it makes it more difficult to carry out quests involving persons who do not name themselves.",
             variable = mwse.mcm.createTableVariable({
                 id = "essential",
                 table = config.filtering,
@@ -59,15 +51,23 @@ local function OnModConfigReady(e)
         })
         filter:createOnOffButton({
             label = "Corpse",
-            description = "",
+            description = "Applied to permanent corpses. Most of them will not be named.",
             variable = mwse.mcm.createTableVariable({
                 id = "corpse",
                 table = config.filtering,
             })
         })
         filter:createOnOffButton({
+            label = "Guard",
+            description = "Applies to guards. They name themselves as guards, but that doesn't mean much.",
+            variable = mwse.mcm.createTableVariable({
+                id = "guard",
+                table = config.filtering,
+            })
+        })
+        filter:createOnOffButton({
             label = "Talking Creature",
-            description = "",
+            description = "Applies to talking creatures. They are more likely than people to not be named. This includes special persons such as Vivec.",
             variable = mwse.mcm.createTableVariable({
                 id = "creature",
                 table = config.filtering,
@@ -77,11 +77,11 @@ local function OnModConfigReady(e)
     do
         local mask = page:createCategory({
             label = "Unknown Name",
-            description = "",
+            description = "Naming rule when the name is completely unknown. If it is partially known, it is partially displayed.",
         })
         mask:createOnOffButton({
             label = "Gender",
-            description = "",
+            description = " Display gender.",
             variable = mwse.mcm.createTableVariable({
                 id = "gender",
                 table = config.masking,
@@ -89,7 +89,7 @@ local function OnModConfigReady(e)
         })
         mask:createOnOffButton({
             label = "Race",
-            description = "",
+            description = " Display race.",
             variable = mwse.mcm.createTableVariable({
                 id = "race",
                 table = config.masking,
