@@ -481,6 +481,51 @@ unitwind:test("IsTarget NPC config", function()
     f.essential = false
     unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- essential
 end)
+
+unitwind:test("CalculateRememberingTerm", function()
+    unitwind:mock(tes3, "findGMST", function(gmst)
+        if gmst == tes3.gmst.fFatigueBase then
+            return { value = 1.25 }
+        end
+        if gmst == tes3.gmst.fFatigueMult then
+            return { value = 0.5 }
+        end
+        return nil
+    end)
+
+    local fatigueTerms = { 0.75, 1.0, 1.25 }
+    for i, f in ipairs(fatigueTerms) do
+        local expected = 0
+        local actual = memo.CalculateRememberingTerm(0, 0, 0, f) -- worst
+        unitwind:expect(expected <= actual).toBe(true)
+        expected = actual
+        actual = memo.CalculateRememberingTerm(5, 25, 40, f) -- start female orc
+        unitwind:expect(expected < actual).toBe(true)
+        expected = actual
+        actual = memo.CalculateRememberingTerm(5, 40, 40, f) -- default
+        if i == 1 then
+            unitwind:expect(math.abs(actual - memo.minTerm) < 0.0001).toBe(true)
+        end
+        unitwind:expect(expected < actual).toBe(true)
+        expected = actual
+        actual = memo.CalculateRememberingTerm(15, 50, 40, f) -- imperial
+        unitwind:expect(expected < actual).toBe(true)
+        expected = actual
+        actual = memo.CalculateRememberingTerm(60, 80, 60, f) -- mid
+        unitwind:expect(expected < actual).toBe(true)
+        expected = actual
+        actual = memo.CalculateRememberingTerm(100, 100, 100, f) -- non-boost best
+        unitwind:expect(memo.maxTerm > actual).toBe(true)
+        unitwind:expect(expected < actual).toBe(true)
+        expected = actual
+        actual = memo.CalculateRememberingTerm(150, 150, 150, f) -- boost
+        unitwind:expect(memo.maxTerm > actual).toBe(true)
+        unitwind:expect(expected < actual).toBe(true)
+    end
+
+    unitwind:unmock(tes3, "findGMST")
+end)
+
 -- clearMocks() in finish() uses pairs to unmock, but if value is nil, lua will not iterate that element, so it will not be unmocked completely.
 -- Specifically, tes3.player does not return to nil unless unmock() instead of clearMocks().
 unitwind:finish()

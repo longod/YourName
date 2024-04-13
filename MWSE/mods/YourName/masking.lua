@@ -44,19 +44,24 @@ function this.CreateMaskedName(name, mask)
     -- n = n:trim():gsub("%s+", " ") -- trim trailing white space
     local part = n:split(" ")
     local masked = ""
+    local count = 0
     for i, _ in ipairs(part) do
         local b = bit.band(mask, bit.lshift(1, i-1))
         if b == 0 then
             -- join with cut combine character
             masked = masked .. part[i]:gsub("%+", " ") .. " "
+            count = count + 1
+        else
+            -- fill
+            -- masked = masked .. "??? "
         end
     end
     masked = masked:trim()
     masked = masked:gsub("^%l", string.upper) -- first character lower to upper
     masked = masked:gsub("^Of ", "") -- trim first Of
     --table.concat(part)
-    logger:trace("mask 0x%x to name '%s'", mask, masked)
-    if masked == "" then
+    logger:trace("mask 0x%x to name '%s' (%d)", mask, masked, count)
+    if count == 0 then
         return nil
     end
     return masked

@@ -162,4 +162,47 @@ function this.WriteMemory(id, mask)
     end
 end
 
+---@param speechcraft number
+---@param personality number
+---@param luck number
+---@param fatigueTerm number
+---@return number
+local function RememberingTerm(speechcraft, personality, luck, fatigueTerm)
+    local speechcraftTerm = speechcraft * 1.0
+    local personalityTerm = personality * 0.2
+    local luckTerm = luck * 0.1
+    return (speechcraftTerm + personalityTerm + luckTerm) * fatigueTerm
+end
+
+-- day
+this.minTerm = 10
+this.maxTerm = 300
+---@param speechcraft number
+---@param personality number
+---@param luck number
+---@param fatigueTerm number
+---@return number
+function this.CalculateRememberingTerm(speechcraft, personality, luck, fatigueTerm)
+    local fatigueBase = tes3.findGMST(tes3.gmst.fFatigueBase).value --[[@as number]]
+    local fatigueMult = tes3.findGMST(tes3.gmst.fFatigueMult).value --[[@as number]]
+    local minimum = RememberingTerm(5, 40, 40, math.max(0, fatigueBase - fatigueMult))
+    local maximum = RememberingTerm(100, 100, 100, math.max(0, fatigueBase))
+    local current = RememberingTerm(speechcraft, personality, luck, fatigueTerm)
+    logger:trace("remenbering ratio: f(speechcraft %d, personality %d, luck %d, fatigueTerm %f) = %f (%f ~ %f)", speechcraft, personality, luck, fatigueTerm, current, minimum, maximum)
+    -- linear to forgetting curve
+    -- This equation is an inversion of the simplified forgetting curve with the time axis replaced by the skill axis.
+    -- It lacks evidence, but is easy to handle because it passes through 0 when the skill is 0 and goes to asymptotically of 1.
+    -- https://en.wikipedia.org/wiki/Forgetting_curve#Equations
+    -- [0, m] -> [min, max]
+    local m = 1.0
+    local s = 0.7
+    local x = math.remap(current, minimum, maximum, 0, m)
+    local curve = 1.0 - math.exp(-x / s)
+    logger:trace("forgetting curve: %f", curve)
+    local toTick = 60 * 60 * 24 -- sec, min, hour
+    local term = math.max(math.remap(curve, 0, 1, this.minTerm, this.maxTerm), 0) -- day
+    logger:trace("RememberingTerm: %f", term)
+    return term
+end
+
 return this
