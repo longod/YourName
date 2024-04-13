@@ -100,15 +100,15 @@ end
 
 --- @param e uiObjectTooltipEventData
 local function uiObjectTooltipCallback(e)
-    if filtering.IsTarget(e.object, config.filtering) then
+    local actor ---@type tes3creature|tes3npc
+    if e.object.isInstance then
+        actor = e.object.baseObject --[[@as (tes3creature|tes3npc)]]
+    else
+        actor = e.object --[[@as (tes3creature|tes3npc)]]
+    end
+    if filtering.IsTarget(actor, config.filtering) then
         local title = e.tooltip:findChild(HelpMenu_name)
         if title then
-            local actor ---@type tes3creature|tes3npc
-            if e.object.isInstance then
-                actor = e.object.baseObject --[[@as (tes3creature|tes3npc)]]
-            else
-                actor = e.object --[[@as (tes3creature|tes3npc)]]
-            end
             SetName(title, actor)
         end
     end
@@ -121,12 +121,16 @@ local function activateCallback(e)
     end
 
     targetObject = nil
-    if filtering.IsTarget(e.target.object, config.filtering) then
-        if e.target.object.isInstance then
-            targetObject = e.target.object.baseObject --[[@as tes3creature|tes3npc]]
-        else
-            targetObject = e.target.object --[[@as tes3creature|tes3npc]]
-        end
+
+    -- Often not npc or creature, but that will be detected later.
+    local actor ---@type tes3creature|tes3npc
+    if e.target.object and e.target.object.isInstance then
+        actor = e.target.object.baseObject --[[@as (tes3creature|tes3npc)]]
+    else
+        actor = e.target.object --[[@as (tes3creature|tes3npc)]]
+    end
+    if filtering.IsTarget(actor, config.filtering) then
+        targetObject = actor
     end
 end
 

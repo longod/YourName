@@ -125,6 +125,59 @@ do
     end
 end
 
+unitwind:test("CreateUnknownName creature", function()
+    local actor = { objectType = tes3.objectType.creature }
+    local configs = {
+        { gender = false, race = false },
+        { gender = false, race = true },
+        { gender = true,  race = false },
+        { gender = true,  race = true },
+    }
+    for _, c in ipairs(configs) do
+        local actual = masking.CreateUnknownName(actor, c)
+        unitwind:expect(actual).toBe("Unknown")
+    end
+end)
+
+unitwind:test("CreateUnknownName npc", function()
+    local actor = {
+        objectType = tes3.objectType.npc,
+        female = false,
+        race = { name = "Race" },
+    }
+    local configs = {
+        { gender = false, race = false },
+        { gender = false, race = true },
+        { gender = true,  race = false },
+        { gender = true,  race = true },
+    }
+    do
+        local expected = {
+            "Unknown",
+            "Race",
+            "Male",
+            "Male Race",
+        }
+        for i, c in ipairs(configs) do
+            local actual = masking.CreateUnknownName(actor, c)
+            unitwind:expect(actual).toBe(expected[i])
+        end
+    end
+    do
+        actor.female = true
+        local expected = {
+            "Unknown",
+            "Race",
+            "Female",
+            "Female Race",
+        }
+        for i, c in ipairs(configs) do
+            local actual = masking.CreateUnknownName(actor, c)
+            unitwind:expect(actual).toBe(expected[i])
+        end
+    end
+end)
+
 do
     local testSource = {
         {
@@ -376,7 +429,7 @@ unitwind:test("IsTarget creature coverage", function()
         essential = false,
         corpse = false,
         guard = false,
-        creature = false,
+        creature = true,
     } ---@type Config.Filtering
     unitwind:expect(filtering.IsTarget(nil, f)).toBe(false)
     local actor = {
@@ -442,9 +495,10 @@ unitwind:test("IsTarget creature config", function()
         isGuard = true,
         objectType = tes3.objectType.creature,
     }
-    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false)
-    f.creature = false
     unitwind:expect(filtering.IsTarget(actor, f)).toBe(true)  -- id
+    f.creature = false
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- creature
+    f.creature = true
     f.guard = false
     unitwind:expect(filtering.IsTarget(actor, f)).toBe(true)  -- no guard
     f.corpse = false
