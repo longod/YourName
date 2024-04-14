@@ -115,10 +115,16 @@ do
             unitwind:expect(actual).toBe(e.mask)
         end)
     end
+    ---@type Config.Masking
+    local c = {
+        gender = true,
+        race = true,
+        fillUnknowns = false, -- It would be nice to be able to switch and test
+    }
     for _, s in ipairs(testSource) do
         unitwind:test("Create Masked Name (" .. s.input .. ")", function()
             for _, e in ipairs(s.expected) do
-                local actual = masking.CreateMaskedName(s.input, e.mask)
+                local actual = masking.CreateMaskedName(s.input, e.mask, c)
                 unitwind:expect(actual).toBe(e.name)
             end
         end)
@@ -127,11 +133,12 @@ end
 
 unitwind:test("CreateUnknownName creature", function()
     local actor = { objectType = tes3.objectType.creature }
+    ---@type Config.Masking[]
     local configs = {
-        { gender = false, race = false },
-        { gender = false, race = true },
-        { gender = true,  race = false },
-        { gender = true,  race = true },
+        { gender = false, race = false, fillUnknowns = false },
+        { gender = false, race = true, fillUnknowns = false },
+        { gender = true,  race = false, fillUnknowns = false },
+        { gender = true,  race = true, fillUnknowns = false },
     }
     for _, c in ipairs(configs) do
         local actual = masking.CreateUnknownName(actor, c)
@@ -145,11 +152,12 @@ unitwind:test("CreateUnknownName npc", function()
         female = false,
         race = { name = "Race" },
     }
+    ---@type Config.Masking[]
     local configs = {
-        { gender = false, race = false },
-        { gender = false, race = true },
-        { gender = true,  race = false },
-        { gender = true,  race = true },
+        { gender = false, race = false, fillUnknowns = false },
+        { gender = false, race = true, fillUnknowns = false },
+        { gender = true,  race = false, fillUnknowns = false },
+        { gender = true,  race = true, fillUnknowns = false },
     }
     do
         local expected = {
@@ -353,7 +361,7 @@ unitwind:test("ClearMemory", function()
     unitwind:expect(memo.ClearMemory()).toBe(false)
 
     local mockData = memo.GetMemory()
-    mockData.records["test"] = { mask = 1 }
+    mockData.records["test"] = { mask = 1, lastAccess = 0 }
     unitwind:expect(memo.ClearMemory()).toBe(false)
     mockData = memo.GetMemory()
     unitwind:expect(mockData.records).toBeType("table")
@@ -364,7 +372,7 @@ unitwind:test("ClearMemory", function()
     })
 
     local data = memo.GetMemory()
-    data.records["test"] = { mask = 2 }
+    data.records["test"] = { mask = 2, lastAccess = 0 }
     unitwind:expect(memo.ClearMemory()).toBe(true)
     data = memo.GetMemory()
     unitwind:expect(data.records).toBeType("table")
@@ -380,20 +388,22 @@ unitwind:test("ReadWriteMemory", function()
     local id = "dagoth_ur_2"
     unitwind:expect(memo.ReadMemory(id)).toBe(nil)
 
-    unitwind:expect(memo.WriteMemory(id, 0x3)).toBe(true)
+    unitwind:expect(memo.WriteMemory(id, 0x3, 1)).toBe(true)
     local record = memo.ReadMemory(id)
     unitwind:expect(record).NOT.toBe(nil)
     unitwind:expect(record).toBeType("table")
     if record then
         unitwind:expect(record.mask).toBe(0x3)
+        unitwind:expect(record.lastAccess).toBe(1)
     end
 
-    unitwind:expect(memo.WriteMemory(id, 0x1)).toBe(false)
+    unitwind:expect(memo.WriteMemory(id, 0x1, 2)).toBe(false)
     record = memo.ReadMemory(id)
     unitwind:expect(record).NOT.toBe(nil)
     unitwind:expect(record).toBeType("table")
     if record then
         unitwind:expect(record.mask).toBe(0x1)
+        unitwind:expect(record.lastAccess).toBe(2)
     end
 
     unitwind:unmock(tes3, "player")

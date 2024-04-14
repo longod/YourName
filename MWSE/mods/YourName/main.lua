@@ -17,10 +17,11 @@ local targetObject = nil
 
 ---@param source tes3uiElement
 ---@param actor tes3creature|tes3npc
-local function SetName(source, actor)
-    local mask = masking.QueryUnknown(actor)
+---@param updateTimestamp boolean
+local function SetName(source, actor, updateTimestamp)
+    local mask = masking.QueryUnknown(actor, config.skill, updateTimestamp)
     if mask > 0 then
-        local name = masking.CreateMaskedName(actor.name, mask)
+        local name = masking.CreateMaskedName(actor.name, mask, config.masking)
         if name then
             source.text = name
         else
@@ -34,9 +35,9 @@ end
 ---@param source tes3uiElement
 ---@param actor tes3creature|tes3npc
 local function UpdateName(source, actor)
-    local mask = masking.QueryUnknown(actor)
+    local mask = masking.QueryUnknown(actor, config.skill, true)
     if mask > 0 then
-        local name = masking.CreateMaskedName(actor.name, mask)
+        local name = masking.CreateMaskedName(actor.name, mask, config.masking)
         if name then
             source.text = name
         else
@@ -71,8 +72,6 @@ local function RefreshMenu(actor)
 --]]
 end
 
-
-
 --- @param e uiActivatedEventData
 local function uiActivatedCallback(e)
     if not targetObject then
@@ -89,7 +88,8 @@ local function uiActivatedCallback(e)
     if targetObject and filtering.IsTarget(targetObject, config.filtering) then
         local title = e.element:findChild(PartDragMenu_title)
         if title then
-            SetName(title, targetObject)
+            -- Besides having a conversation, accessing the container will update your memory, but it won't be a problem.
+            SetName(title, targetObject, true)
         end
 
         e.element:registerAfter(tes3.uiEvent.destroy, function(_)
@@ -109,7 +109,7 @@ local function uiObjectTooltipCallback(e)
     if filtering.IsTarget(actor, config.filtering) then
         local title = e.tooltip:findChild(HelpMenu_name)
         if title then
-            SetName(title, actor)
+            SetName(title, actor, false)
         end
     end
 end
@@ -168,7 +168,7 @@ local function infoGetTextCallback(e)
         actor = targetObject
     end
     if actor and filtering.IsTarget(actor, config.filtering) then
-        local unknown = masking.QueryUnknown(actor)
+        local unknown = masking.QueryUnknown(actor, config.skill, true)
         if unknown > 0 then
             local mask = masking.ContainName(text, actor.name, unknown)
             if unknown ~= mask then

@@ -10,25 +10,17 @@ local defaultConfig = {
         corpse = true,
         guard = true,
         creature = true,
-        -- non-unique name NPC -- real mode
-        -- talking creature -- real mode
-        -- follower = false, -- possible? from AI parameter? --
-        -- filter list
     },
     ---@class Config.Masking
     masking = {
         gender = true,
         race = true,
-        -- unknown name
-        -- fillUnknownPart = false,
-        -- https://wiki.openmw.org/index.php?title=Research:Disposition_and_Persuasion
-        -- modifier = true, -- Speechcraft, Personality, Luck, same race or not, disposition, fatigue, spell
+        fillUnknowns = true,
     },
-
-    -- game settings
-    -- forgotten
-    -- skill, attribute
-
+    ---@class Config.Skill
+    skill = {
+        enable = true,
+    },
     ---@class Config.Development
     development = {
         logLevel = "INFO",

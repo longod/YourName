@@ -21,13 +21,13 @@ local function OnModConfigReady(e)
         label = settings.modName,
     })
     page.sidebar:createInfo({
-        text = "More important to ask the people you are talking to about their *Background*."
+        text = "More important to ask the people you are talking to about their 'Background'."
     })
 
     page:createButton({
         buttonText = "Forget",
         label = "everyone's name",
-        description = "Clear information recorded with the names of the people you have been in contact with. This feature is in-game only.",
+        description = "Erase from your memory all names of the people you have met.\nThis feature is in-game only.",
         callback = function()
             if require("YourName.memory").ClearMemory() then
 		        tes3.messageBox { message = "Succeeded in forgetting everyone's name.", buttons = { tes3.findGMST(tes3.gmst.sOK).value --[[@as string]] } }
@@ -77,11 +77,11 @@ local function OnModConfigReady(e)
     do
         local mask = page:createCategory({
             label = "Unknown Name",
-            description = "Naming rule when the name is completely unknown. If it is partially known, it is partially displayed.",
+            description = "Naming rule when a name is unknown. If it is partially known, it is partially displayed.",
         })
         mask:createOnOffButton({
             label = "Gender",
-            description = " Display gender.",
+            description = "If a name is completely unknown, gender is displayed.",
             variable = mwse.mcm.createTableVariable({
                 id = "gender",
                 table = config.masking,
@@ -89,17 +89,42 @@ local function OnModConfigReady(e)
         })
         mask:createOnOffButton({
             label = "Race",
-            description = " Display race.",
+            description = "If a name is completely unknown, race is displayed.",
             variable = mwse.mcm.createTableVariable({
                 id = "race",
                 table = config.masking,
+            })
+        })
+        mask:createOnOffButton({
+            label = "Fill in the unknowns",
+            description = "If part of a name is not known, fill in that part with a temporary notation.",
+            variable = mwse.mcm.createTableVariable({
+                id = "fillUnknowns",
+                table = config.masking,
+            })
+        })
+    end
+    do
+        local skill = page:createCategory({
+            label = "Gameplay",
+            description = "Bringing more depth to gameplay.",
+        })
+        skill:createOnOffButton({
+            label = "Forget names over time",
+            description =[[Over time, you will forget names of people you have met.
+The duration of time a name can be remembered is determined by Speechcraft, Personality, and Luck, and the higher these are, the harder it is to forget. However, the skill level is not increased by revealing names.
+By engaging with the person while you remember his or her name, you are less likely to forget it.
+If you have not seen the person for a while and have forgotten his or her name, you may be able to ask for it again.]],
+            variable = mwse.mcm.createTableVariable({
+                id = "enable",
+                table = config.skill,
             })
         })
     end
     do
         local dev = page:createCategory({
             label = "Development",
-            description = "",
+            description = "Features for Development",
         })
         dev:createDropdown({
             label = "Logging Level",
@@ -134,8 +159,8 @@ local function OnModConfigReady(e)
             end
         })
         dev:createOnOffButton({
-            label = "Unit-Test",
-            description = "Run unit-test.",
+            label = "Unit testing",
+            description = "Run Unit testing on startup.",
             variable = mwse.mcm.createTableVariable({
                 id = "test",
                 table = config.development,

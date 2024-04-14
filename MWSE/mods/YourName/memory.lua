@@ -83,7 +83,7 @@ local alias = {
 
 ---@class Record
 ---@field mask integer
------@field lastAccess number
+---@field lastAccess number
 
 ---@class Memory
 ---@field records {[string]: Record}
@@ -147,17 +147,20 @@ end
 
 ---@param id string
 ---@param mask integer
+---@param timestamp number
 ---@return boolean newrecord
-function this.WriteMemory(id, mask)
+function this.WriteMemory(id, mask, timestamp)
     local memory = this.GetMemory()
     id = this.GetAliasedID(id)
-    if memory.records[id] ~= nil then
+    local record = memory.records[id]
+    if record ~= nil then
         logger:trace("update: %s = %x", id, mask)
-        memory.records[id].mask = mask
+        record.mask = mask
+        record.lastAccess = timestamp
         return false
     else
         logger:trace("new: %s = %x", id, mask)
-        memory.records[id] = { mask = mask }
+        memory.records[id] = { mask = mask, lastAccess = timestamp }
         return true
     end
 end
@@ -199,10 +202,21 @@ function this.CalculateRememberingTerm(speechcraft, personality, luck, fatigueTe
     local x = math.remap(current, minimum, maximum, 0, m)
     local curve = 1.0 - math.exp(-x / s)
     logger:trace("forgetting curve: %f", curve)
-    local toTick = 60 * 60 * 24 -- sec, min, hour
     local term = math.max(math.remap(curve, 0, 1, this.minTerm, this.maxTerm), 0) -- day
     logger:trace("RememberingTerm: %f", term)
     return term
+end
+
+---@param mobile tes3mobileNPC
+---@param record Record
+---@return boolean
+function this.TryRemember(mobile, record)
+    local remember = this.CalculateRememberingTerm(mobile.speechcraft.current, mobile.personality.current, mobile.luck.current, mobile:getFatigueTerm())
+    local now = tes3.getSimulationTimestamp()
+    local interval = now - record.lastAccess
+    interval = interval / 24 -- hour to day
+    logger:trace("remember: %f > %f", interval, remember)
+    return interval <= remember
 end
 
 return this

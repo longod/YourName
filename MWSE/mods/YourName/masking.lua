@@ -31,8 +31,9 @@ end
 
 ---@param name string
 ---@param mask integer
+---@param config  Config.Masking
 ---@return string?
-function this.CreateMaskedName(name, mask)
+function this.CreateMaskedName(name, mask, config)
     local bit = require("bit")
     local n = name
     -- the, or combine after word
@@ -51,9 +52,8 @@ function this.CreateMaskedName(name, mask)
             -- join with cut combine character
             masked = masked .. part[i]:gsub("%+", " ") .. " "
             count = count + 1
-        else
-            -- fill
-            -- masked = masked .. "??? "
+        elseif config.fillUnknowns then
+            masked = masked .. "??? "
         end
     end
     masked = masked:trim()
@@ -126,21 +126,35 @@ function this.CreateUnknownName(actor, config)
 end
 
 ---@param actor tes3creature|tes3npc
+---@param config Config.Skill
+---@param updateTimestamp boolean
 ---@return integer
-function this.QueryUnknown(actor)
+function this.QueryUnknown(actor, config, updateTimestamp)
     local record = memo.ReadMemory(actor.id)
     if record ~= nil then
+        -- test remember
+        if config.enable and tes3.mobilePlayer and record.lastAccess then
+            if memo.TryRemember(tes3.mobilePlayer , record) == false then
+                logger:trace("forget")
+                local mask = this.CreateMask(actor.name)
+                record.mask = mask -- overwrite
+                -- return record.mask
+            end
+        end
+        if updateTimestamp then
+            record.lastAccess = tes3.getSimulationTimestamp()
+        end
         return record.mask
     end
     local mask = this.CreateMask(actor.name)
-    memo.WriteMemory(actor.id, mask)
+    memo.WriteMemory(actor.id, mask, tes3.getSimulationTimestamp())
     return mask
 end
 
 ---@param id string
 ---@param mask integer
 function this.RevealName(id, mask)
-    memo.WriteMemory(id, mask)
+    memo.WriteMemory(id, mask, tes3.getSimulationTimestamp())
 end
 
 --- https://wiki.openmw.org/index.php?title=Research:Dialogue_and_Messages
