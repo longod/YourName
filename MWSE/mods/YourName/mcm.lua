@@ -51,7 +51,7 @@ local function OnModConfigReady(e)
         })
         filter:createOnOffButton({
             label = "Corpse",
-            description = "Applied to permanent corpses. Most of them will not be named.",
+            description = "Applied to persistent corpses. Most of them will not be named.",
             variable = mwse.mcm.createTableVariable({
                 id = "corpse",
                 table = config.filtering,
