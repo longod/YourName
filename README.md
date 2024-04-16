@@ -8,7 +8,8 @@ Outlander doesn't know names of people, not even Fargoth. By talking to the pers
 If you get a partial name out of them, that is the only part.
 
 ## Options
-- NPCs and creatures whose names are unknown can be filtered by their attributes (Essentials, Persistent Corpses, Guards, Talking Creatures).
+- NPCs and creatures whose names are unknown can be filtered by their attributes.
+  - Essentials, Persistent Corpses, Guards and Talking Creatures.
   - NPCs with non-unique names are not included.
 - Allows some control of how persons with unknown names are displayed.
 - If you don't meet that person for a long time, you will forget his or her name. This is dependent on skills and attributes.

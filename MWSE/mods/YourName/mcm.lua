@@ -6,22 +6,11 @@ local function OnModConfigReady(e)
     template:saveOnClose(settings.configPath, config)
     template:register()
 
-    ---@param value boolean
-    ---@return string
-    local function GetOnOff(value)
-        return (value and tes3.findGMST(tes3.gmst.sOn).value --[[@as string]] or tes3.findGMST(tes3.gmst.sOff).value --[[@as string]])
-    end
-    ---@param value boolean
-    ---@return string
-    local function GetYesNo(value)
-        return (value and tes3.findGMST(tes3.gmst.sYes).value --[[@as string]] or tes3.findGMST(tes3.gmst.sNo).value --[[@as string]])
-    end
-
     local page = template:createSideBarPage({
         label = settings.modName,
     })
     page.sidebar:createInfo({
-        text = "More important to ask the people you are talking to about their 'Background'."
+        text = "More important to ask the people you are talking to about their Background."
     })
 
     page:createButton({
@@ -112,12 +101,12 @@ local function OnModConfigReady(e)
         skill:createOnOffButton({
             label = "Forget names over time",
             description =[[Over time, you will forget names of people you have met.
-The duration of time a name can be remembered is determined by Speechcraft, Personality, and Luck, and the higher these are, the harder it is to forget. However, the skill level is not increased by revealing names.
+The duration of time a name can be remembered is determined by Speechcraft, Personality, Luck and Fatigue, and the higher these are, the harder it is to forget. However, the skill level is not increased by revealing names.
 By engaging with the person while you remember his or her name, you are less likely to forget it.
 If you have not seen the person for a while and have forgotten his or her name, you may be able to ask for it again.]],
             variable = mwse.mcm.createTableVariable({
-                id = "enable",
-                table = config.skill,
+                id = "skill",
+                table = config.game,
             })
         })
     end

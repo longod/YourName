@@ -25,7 +25,7 @@ function this.CreateMask(name)
         end
     end
     mask = bit.bor(mask, bit.lshift(1, count))
-    logger:trace("name '%s' to mask 0x%x", name, mask)
+    logger:debug("Name '%s' to Mask 0x%x", name, mask)
     return mask
 end
 
@@ -60,7 +60,7 @@ function this.CreateMaskedName(name, mask, config)
     masked = masked:gsub("^%l", string.upper) -- first character lower to upper
     masked = masked:gsub("^Of ", "") -- trim first Of
     --table.concat(part)
-    logger:trace("mask 0x%x to name '%s' (%d)", mask, masked, count)
+    logger:debug("Mask 0x%x to Name '%s' (%d)", mask, masked, count)
     if count == 0 then
         return nil
     end
@@ -81,7 +81,7 @@ function this.PreprocessName(name)
     n = n:gsub(" [Oo]f ", " ")
     n = n:trim():gsub("%s+", " ") -- trim trailing white space
     -- <name>'s
-    logger:trace("%s", n)
+    logger:trace("Preprocessed name: %s", n)
     return n
 end
 
@@ -95,7 +95,7 @@ function this.PreprocessText(text)
     t = t:gsub(" [\"']", " ") -- quate middle
     t = t:gsub("[\"'] ", " ") -- quate middle
     t = t:trim():gsub("%s+", " ") -- trim trailing white space
-    logger:trace("%s", t)
+    logger:trace("Preprocessed text: %s", t)
     return t
 end
 
@@ -126,16 +126,16 @@ function this.CreateUnknownName(actor, config)
 end
 
 ---@param actor tes3creature|tes3npc
----@param config Config.Skill
+---@param config Config.Gameplay
 ---@param updateTimestamp boolean
 ---@return integer
 function this.QueryUnknown(actor, config, updateTimestamp)
     local record = memo.ReadMemory(actor.id)
     if record ~= nil then
         -- test remember
-        if config.enable and tes3.mobilePlayer and record.lastAccess then
+        if config.skill and tes3.mobilePlayer and record.lastAccess then
             if memo.TryRemember(tes3.mobilePlayer , record) == false then
-                logger:trace("forget")
+                logger:debug("Forget %s", actor.id)
                 local mask = this.CreateMask(actor.name)
                 record.mask = mask -- overwrite
                 -- return record.mask
@@ -190,7 +190,7 @@ end
 ---@return integer mask new mask
 function this.ContainName(text, fullname, unknown)
     if this.FindMacroName(text) then
-        logger:debug("Contain fullname")
+        logger:debug("Contain macreo name")
         return 0x0
     end
     local find = this.FindName(text, fullname)

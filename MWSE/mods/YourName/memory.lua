@@ -96,7 +96,7 @@ local mockData = {
 function this.GetAliasedID(id)
     local a = alias[id]
     if a ~= nil then
-        logger:trace("%s alias to %s", id, a)
+        logger:debug("%s alias to %s", id, a)
         return a
     end
     return id
@@ -110,7 +110,7 @@ function this.GetMemory()
         end
         return tes3.player.data.yourName
     end
-    logger:trace("fallback mock memory")
+    logger:trace("Fallback mock memory")
     return mockData
 end
 
@@ -119,7 +119,7 @@ function this.ClearMemory()
     if tes3.player and tes3.player.data then
         if tes3.player.data.yourName ~= nil then
             tes3.player.data.yourName = nil
-            logger:info("clear memory")
+            logger:info("Clear Memory")
             return true
         end
         return false
@@ -127,7 +127,7 @@ function this.ClearMemory()
     mockData = {
         records = {},
     }
-    logger:debug("Clear mock memory")
+    logger:trace("Clear mocked memory")
     return false
 end
 
@@ -138,10 +138,10 @@ function this.ReadMemory(id)
     local memory = this.GetMemory()
     local record = memory.records[id]
     if record ~= nil then
-        logger:trace("read: %s = %x", id, record.mask)
+        logger:trace("Read: %s = %x", id, record.mask)
         return record
     end
-    logger:trace("read: %s does not exist", id)
+    logger:trace("Read: %s does not exist", id)
     return nil
 end
 
@@ -154,12 +154,12 @@ function this.WriteMemory(id, mask, timestamp)
     id = this.GetAliasedID(id)
     local record = memory.records[id]
     if record ~= nil then
-        logger:trace("update: %s = %x", id, mask)
+        logger:trace("Update: %s = %x", id, mask)
         record.mask = mask
         record.lastAccess = timestamp
         return false
     else
-        logger:trace("new: %s = %x", id, mask)
+        logger:trace("New: %s = %x", id, mask)
         memory.records[id] = { mask = mask, lastAccess = timestamp }
         return true
     end
@@ -178,8 +178,8 @@ local function RememberingTerm(speechcraft, personality, luck, fatigueTerm)
 end
 
 -- day
-this.minTerm = 10
-this.maxTerm = 300
+this.minTerm = 7
+this.maxTerm = 240
 ---@param speechcraft number
 ---@param personality number
 ---@param luck number
@@ -191,7 +191,7 @@ function this.CalculateRememberingTerm(speechcraft, personality, luck, fatigueTe
     local minimum = RememberingTerm(5, 40, 40, math.max(0, fatigueBase - fatigueMult))
     local maximum = RememberingTerm(100, 100, 100, math.max(0, fatigueBase))
     local current = RememberingTerm(speechcraft, personality, luck, fatigueTerm)
-    logger:trace("remenbering ratio: f(speechcraft %d, personality %d, luck %d, fatigueTerm %f) = %f (%f ~ %f)", speechcraft, personality, luck, fatigueTerm, current, minimum, maximum)
+    logger:trace("Remenbering ratio: (speechcraft %d, personality %d, luck %d, fatigueTerm %f) = %f (%f ~ %f)", speechcraft, personality, luck, fatigueTerm, current, minimum, maximum)
     -- linear to forgetting curve
     -- This equation is an inversion of the simplified forgetting curve with the time axis replaced by the skill axis.
     -- It lacks evidence, but is easy to handle because it passes through 0 when the skill is 0 and goes to asymptotically of 1.
@@ -201,9 +201,9 @@ function this.CalculateRememberingTerm(speechcraft, personality, luck, fatigueTe
     local s = 0.7
     local x = math.remap(current, minimum, maximum, 0, m)
     local curve = 1.0 - math.exp(-x / s)
-    logger:trace("forgetting curve: %f", curve)
+    logger:trace("Forgetting curve: %f", curve)
     local term = math.max(math.remap(curve, 0, 1, this.minTerm, this.maxTerm), 0) -- day
-    logger:trace("RememberingTerm: %f", term)
+    logger:trace("Remembering Term: %f", term)
     return term
 end
 
@@ -215,7 +215,7 @@ function this.TryRemember(mobile, record)
     local now = tes3.getSimulationTimestamp()
     local interval = now - record.lastAccess
     interval = interval / 24 -- hour to day
-    logger:trace("remember: %f > %f", interval, remember)
+    logger:debug("Interval: %f, Remember: %f", interval, remember)
     return interval <= remember
 end
 

@@ -19,7 +19,7 @@ local targetObject = nil
 ---@param actor tes3creature|tes3npc
 ---@param updateTimestamp boolean
 local function SetName(source, actor, updateTimestamp)
-    local mask = masking.QueryUnknown(actor, config.skill, updateTimestamp)
+    local mask = masking.QueryUnknown(actor, config.game, updateTimestamp)
     if mask > 0 then
         local name = masking.CreateMaskedName(actor.name, mask, config.masking)
         if name then
@@ -35,7 +35,7 @@ end
 ---@param source tes3uiElement
 ---@param actor tes3creature|tes3npc
 local function UpdateName(source, actor)
-    local mask = masking.QueryUnknown(actor, config.skill, true)
+    local mask = masking.QueryUnknown(actor, config.game, true)
     if mask > 0 then
         local name = masking.CreateMaskedName(actor.name, mask, config.masking)
         if name then
@@ -149,7 +149,7 @@ local function infoGetTextCallback(e)
         if not text then
             return
         end
-        logger:trace("text: %s", text)
+        -- logger:trace("original text: %s", text)
     end
 
     ---@type (tes3creature|tes3npc)?
@@ -168,7 +168,7 @@ local function infoGetTextCallback(e)
         actor = targetObject
     end
     if actor and filtering.IsTarget(actor, config.filtering) then
-        local unknown = masking.QueryUnknown(actor, config.skill, true)
+        local unknown = masking.QueryUnknown(actor, config.game, true)
         if unknown > 0 then
             local mask = masking.ContainName(text, actor.name, unknown)
             if unknown ~= mask then

@@ -17,9 +17,9 @@ local defaultConfig = {
         race = true,
         fillUnknowns = true,
     },
-    ---@class Config.Skill
-    skill = {
-        enable = true,
+    ---@class Config.Gameplay
+    game = {
+        skill = true,
     },
     ---@class Config.Development
     development = {

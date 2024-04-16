@@ -253,7 +253,7 @@ local filter = {
     ["Dahrk Mezalf"] = false,
     ["skeleton_Vemynal"] = false,
     ["worm lord"] = false,
-    ---- tribunals
+    ---- tribunal
     ["almalexia"] = true,
     ["almalexia_warrior"] = true,
     ["goblin_warchief1"] = false,
@@ -288,26 +288,26 @@ function this.IsTarget(actor, config)
         return false
     end
     if config.essential == false and actor.isEssential == true then
-        logger:trace("%s is essential", actor.id)
+        logger:trace("%s is an essential", actor.id)
         return false
     end
     if config.corpse == false and actor.persistent == true then
-        logger:trace("%s is corpse", actor.id)
+        logger:trace("%s is a corpse", actor.id)
         return false
     end
     if actor.objectType == tes3.objectType.npc then
         if config.guard == false and actor.isGuard == true then
-            logger:trace("%s is guard", actor.id)
+            logger:trace("%s is a guard", actor.id)
             return false
         end
         -- implicit true
         local f = filter[memo.GetAliasedID(actor.id)]
-        logger:trace("%s is deny list: %s", actor.id, tostring(f))
+        logger:trace("%s is a NPC in deny list: %s", actor.id, tostring(f))
         return (f == nil) or (f == true)
     elseif actor.objectType == tes3.objectType.creature and config.creature == true then
         -- only special creatures
         local f = filter[memo.GetAliasedID(actor.id)]
-        logger:trace("%s is allow list: %s", actor.id, tostring(f))
+        logger:trace("%s is a creature in allow list: %s", actor.id, tostring(f))
         return (filter[memo.GetAliasedID(actor.id)] == true)
     end
     return false
