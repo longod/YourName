@@ -32,7 +32,7 @@ local function OnModConfigReady(e)
         })
         filter:createOnOffButton({
             label = "Essential",
-            description = "Applies to NPCs with the essential.Many of them will identify themselves, but it makes it more difficult to carry out quests involving persons who do not name themselves.",
+            description = "Applies to NPCs with the essential. Many of them will identify themselves, but it makes it more difficult to carry out quests involving persons who do not name themselves.",
             variable = mwse.mcm.createTableVariable({
                 id = "essential",
                 table = config.filtering,
@@ -40,7 +40,7 @@ local function OnModConfigReady(e)
         })
         filter:createOnOffButton({
             label = "Corpse",
-            description = "Applied to persistent corpses. Most of them will not be named.",
+            description = "Applied to persistent corpses. You won't get names out of almost all of them.",
             variable = mwse.mcm.createTableVariable({
                 id = "corpse",
                 table = config.filtering,
@@ -51,6 +51,14 @@ local function OnModConfigReady(e)
             description = "Applies to guards. They name themselves as guards, but that doesn't mean much.",
             variable = mwse.mcm.createTableVariable({
                 id = "guard",
+                table = config.filtering,
+            })
+        })
+        filter:createOnOffButton({
+            label = "No Lore",
+            description = "Applies to NPCs without the standard lore topics. Especially, they do not have Background topic, so you may not get their names.",
+            variable = mwse.mcm.createTableVariable({
+                id = "nolore",
                 table = config.filtering,
             })
         })

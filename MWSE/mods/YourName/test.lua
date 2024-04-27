@@ -7,7 +7,7 @@ local memo = require("YourName.memory")
 local unitwind = require("unitwind").new({
     enabled = config.development.test,
     highlight = false,
-    -- exitAfter = true,
+    exitAfter = true,
 })
 
 unitwind:start("Your Name")
@@ -414,6 +414,7 @@ unitwind:test("IsTarget invalid coverage", function()
         essential = false,
         corpse = false,
         guard = false,
+        nolore = false,
         creature = false,
     } ---@type Config.Filtering
     unitwind:expect(filtering.IsTarget(nil, f)).toBe(false) -- nil
@@ -423,15 +424,18 @@ unitwind:test("IsTarget invalid coverage", function()
         isEssential = false,
         persistent = false,
         isGuard = false,
+
         objectType = tes3.objectType.weapon,
     }
-    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- objectType
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false)
     actor.isGuard = true
-    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- still objectType
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false)
     actor.persistent = true
-    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- corpse
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false)
     actor.isEssential = true
-    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- essential
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false)
+    actor.script = { context = { ["NoLore"] = 0 } }
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false)
 end)
 
 unitwind:test("IsTarget creature coverage", function()
@@ -439,6 +443,7 @@ unitwind:test("IsTarget creature coverage", function()
         essential = false,
         corpse = false,
         guard = false,
+        nolore = false,
         creature = true,
     } ---@type Config.Filtering
     unitwind:expect(filtering.IsTarget(nil, f)).toBe(false)
@@ -455,11 +460,13 @@ unitwind:test("IsTarget creature coverage", function()
     actor.id = "almalexia"
     unitwind:expect(filtering.IsTarget(actor, f)).toBe(true)  -- id true
     actor.isGuard = true
-    unitwind:expect(filtering.IsTarget(actor, f)).toBe(true)  -- no guard
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- guard
     actor.persistent = true
     unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- corpse
     actor.isEssential = true
     unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- essential
+    actor.script = { context = { ["NoLore"] = 0 } }
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- nolore
 end)
 
 unitwind:test("IsTarget NPC coverage", function()
@@ -467,6 +474,7 @@ unitwind:test("IsTarget NPC coverage", function()
         essential = false,
         corpse = false,
         guard = false,
+        nolore = false,
         creature = false,
     } ---@type Config.Filtering
     unitwind:expect(filtering.IsTarget(nil, f)).toBe(false)
@@ -488,6 +496,8 @@ unitwind:test("IsTarget NPC coverage", function()
     unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- corpse
     actor.isEssential = true
     unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- essential
+    actor.script = { context = { ["NoLore"] = 0 } }
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- nolore
 end)
 
 unitwind:test("IsTarget creature config", function()
@@ -495,6 +505,7 @@ unitwind:test("IsTarget creature config", function()
         essential = true,
         corpse = true,
         guard = true,
+        nolore = true,
         creature = true,
     } ---@type Config.Filtering
     unitwind:expect(filtering.IsTarget(nil, f)).toBe(false)
@@ -503,6 +514,7 @@ unitwind:test("IsTarget creature config", function()
         isEssential = true,
         persistent = true,
         isGuard = true,
+        script = { context = { ["NoLore"] = 0 } },
         objectType = tes3.objectType.creature,
     }
     unitwind:expect(filtering.IsTarget(actor, f)).toBe(true)  -- id
@@ -510,12 +522,16 @@ unitwind:test("IsTarget creature config", function()
     unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- creature
     f.creature = true
     f.guard = false
-    unitwind:expect(filtering.IsTarget(actor, f)).toBe(true)  -- no guard
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- guard
+    f.guard = true
     f.corpse = false
     unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- corpse
     f.corpse = true
     f.essential = false
     unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- essential
+    f.essential = true
+    f.nolore = false
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- nolore
 end)
 
 unitwind:test("IsTarget NPC config", function()
@@ -523,6 +539,7 @@ unitwind:test("IsTarget NPC config", function()
         essential = true,
         corpse = true,
         guard = true,
+        nolore = true,
         creature = true,
     } ---@type Config.Filtering
     unitwind:expect(filtering.IsTarget(nil, f)).toBe(false)
@@ -531,6 +548,7 @@ unitwind:test("IsTarget NPC config", function()
         isEssential = true,
         persistent = true,
         isGuard = true,
+        script = { context = { ["NoLore"] = 0 } },
         objectType = tes3.objectType.npc,
     }
     unitwind:expect(filtering.IsTarget(actor, f)).toBe(true)  -- id
@@ -544,6 +562,9 @@ unitwind:test("IsTarget NPC config", function()
     f.corpse = true
     f.essential = false
     unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- essential
+    f.essential = true
+    f.nolore = false
+    unitwind:expect(filtering.IsTarget(actor, f)).toBe(false) -- nolore
 end)
 
 unitwind:test("CalculateRememberingTerm", function()

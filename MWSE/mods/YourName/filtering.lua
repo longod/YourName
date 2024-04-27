@@ -280,13 +280,10 @@ local filter = {
     ["BM_riekling_Krish_UNIQU"] = true, -- Krish talks name?
 }
 
----@param actor (tes3activator|tes3alchemy|tes3apparatus|tes3armor|tes3bodyPart|tes3book|tes3clothing|tes3container|tes3containerInstance|tes3creature|tes3creatureInstance|tes3door|tes3ingredient|tes3leveledCreature|tes3leveledItem|tes3light|tes3lockpick|tes3misc|tes3npc|tes3npcInstance|tes3probe|tes3repairTool|tes3static|tes3weapon)?
+---@param actor tes3creature|tes3creatureInstance|tes3npc|tes3npcInstance
 ---@param config Config.Filtering
 ---@return boolean
-function this.IsTarget(actor, config)
-    if actor == nil then
-        return false
-    end
+local function IsTargetByConfig(actor, config)
     if config.essential == false and actor.isEssential == true then
         logger:trace("%s is an essential", actor.id)
         return false
@@ -295,20 +292,47 @@ function this.IsTarget(actor, config)
         logger:trace("%s is a corpse", actor.id)
         return false
     end
-    if actor.objectType == tes3.objectType.npc then
-        if config.guard == false and actor.isGuard == true then
-            logger:trace("%s is a guard", actor.id)
+    if config.guard == false and actor.isGuard == true then
+        logger:trace("%s is a guard", actor.id)
+        return false
+    end
+    if config.nolore == false and actor.script ~= nil then
+        -- base object has modified variables?
+        if actor.script.context["NoLore"] ~= nil then
+            logger:trace("%s has NoLore in script %s", actor.id, actor.script.id)
             return false
         end
+    end
+    return true
+end
+
+---@param actor (tes3activator|tes3alchemy|tes3apparatus|tes3armor|tes3bodyPart|tes3book|tes3clothing|tes3container|tes3containerInstance|tes3creature|tes3creatureInstance|tes3door|tes3ingredient|tes3leveledCreature|tes3leveledItem|tes3light|tes3lockpick|tes3misc|tes3npc|tes3npcInstance|tes3probe|tes3repairTool|tes3static|tes3weapon)?
+---@param config Config.Filtering
+---@return boolean
+function this.IsTarget(actor, config)
+    if actor == nil then
+        return false
+    end
+    if actor.objectType == tes3.objectType.npc then
+        if IsTargetByConfig(actor --[[@as tes3npc|tes3npcInstance]], config) == false then
+            return false
+        end
+
         -- implicit true
         local f = filter[memo.GetAliasedID(actor.id)]
         logger:trace("%s is a NPC in deny list: %s", actor.id, tostring(f))
         return (f == nil) or (f == true)
+
     elseif actor.objectType == tes3.objectType.creature and config.creature == true then
+        if IsTargetByConfig(actor --[[@as tes3creature|tes3creatureInstance]], config) == false then
+            return false
+        end
+
         -- only special creatures
         local f = filter[memo.GetAliasedID(actor.id)]
         logger:trace("%s is a creature in allow list: %s", actor.id, tostring(f))
         return (filter[memo.GetAliasedID(actor.id)] == true)
+
     end
     return false
 end

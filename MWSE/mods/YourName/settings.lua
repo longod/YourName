@@ -9,6 +9,7 @@ local defaultConfig = {
         essential = true,
         corpse = true,
         guard = true,
+        nolore = true,
         creature = true,
     },
     ---@class Config.Masking
