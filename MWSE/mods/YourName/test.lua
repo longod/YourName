@@ -7,7 +7,7 @@ local memo = require("YourName.memory")
 local unitwind = require("unitwind").new({
     enabled = config.development.test,
     highlight = false,
-    exitAfter = true,
+    -- exitAfter = true,
 })
 
 unitwind:start("Your Name")
