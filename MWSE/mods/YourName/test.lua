@@ -1,4 +1,3 @@
-
 local config = require("YourName.config")
 local masking = require("YourName.masking")
 local filtering = require("YourName.filtering")
@@ -65,10 +64,10 @@ do
             expected = {
                 { mask = 0x0, name = "Ettiene of Glenmoril Wyrd" },
                 { mask = 0x1, name = "Glenmoril Wyrd" },
-                { mask = 0x2, name = "Ettiene Wyrd" }, -- wired
+                { mask = 0x2, name = "Ettiene Wyrd" },         -- wired
                 { mask = 0x4, name = "Ettiene of Glenmoril" }, -- wired
-                { mask = 0x3, name = "Wyrd" }, -- wired
-                { mask = 0x5, name = "Glenmoril" }, -- wired
+                { mask = 0x3, name = "Wyrd" },                 -- wired
+                { mask = 0x5, name = "Glenmoril" },            -- wired
                 { mask = 0x6, name = "Ettiene" },
                 { mask = 0x7, name = unknown },
             }
@@ -136,9 +135,9 @@ unitwind:test("CreateUnknownName creature", function()
     ---@type Config.Masking[]
     local configs = {
         { gender = false, race = false, fillUnknowns = false },
-        { gender = false, race = true, fillUnknowns = false },
+        { gender = false, race = true,  fillUnknowns = false },
         { gender = true,  race = false, fillUnknowns = false },
-        { gender = true,  race = true, fillUnknowns = false },
+        { gender = true,  race = true,  fillUnknowns = false },
     }
     for _, c in ipairs(configs) do
         local actual = masking.CreateUnknownName(actor, c)
@@ -155,9 +154,9 @@ unitwind:test("CreateUnknownName npc", function()
     ---@type Config.Masking[]
     local configs = {
         { gender = false, race = false, fillUnknowns = false },
-        { gender = false, race = true, fillUnknowns = false },
+        { gender = false, race = true,  fillUnknowns = false },
         { gender = true,  race = false, fillUnknowns = false },
-        { gender = true,  race = true, fillUnknowns = false },
+        { gender = true,  race = true,  fillUnknowns = false },
     }
     do
         local expected = {
@@ -228,20 +227,26 @@ end
 do
     local testSource = {
         {
-            input = "'Ten-Tongues' does business with many adventurers -- hes and shes that run about the ruins down below. Now and then they find something nice, and they bring it to 'Ten-Tongues'. Maybe you are this kind of person? If so, you see people down there, look like poor helpless people with no home? Maybe they are, and maybe they aren't. Maybe they are the Black Dart Gang, and they surprise you, kill you dead *snap* like that with one poison dart, take your stuff, and goodbye to you forever.",
-            expected = "Ten-Tongues does business with many adventurers -- hes and shes that run about the ruins down below Now and then they find something nice and they bring it to Ten-Tongues Maybe you are this kind of person If so you see people down there look like poor helpless people with no home Maybe they are and maybe they aren't Maybe they are the Black Dart Gang and they surprise you kill you dead snap like that with one poison dart take your stuff and goodbye to you forever",
+            input =
+            "'Ten-Tongues' does business with many adventurers -- hes and shes that run about the ruins down below. Now and then they find something nice, and they bring it to 'Ten-Tongues'. Maybe you are this kind of person? If so, you see people down there, look like poor helpless people with no home? Maybe they are, and maybe they aren't. Maybe they are the Black Dart Gang, and they surprise you, kill you dead *snap* like that with one poison dart, take your stuff, and goodbye to you forever.",
+            expected =
+            "Ten-Tongues does business with many adventurers -- hes and shes that run about the ruins down below Now and then they find something nice and they bring it to Ten-Tongues Maybe you are this kind of person If so you see people down there look like poor helpless people with no home Maybe they are and maybe they aren't Maybe they are the Black Dart Gang and they surprise you kill you dead snap like that with one poison dart take your stuff and goodbye to you forever",
         },
         {
             input = "They call me \"Fast Eddie.\" Who are you?",
             expected = "They call me Fast Eddie Who are you",
         },
         {
-            input = "Ah. You understand me a bit, yes? Hello, %PCName. Yakum greet you. Bless and be blessed. Speak Old Elf, yes, so Yakum learn. You know @Ashlanders#, yes, a little. Yakum is Ashlander.",
-            expected = "Ah You understand me a bit yes Hello %PCName Yakum greet you Bless and be blessed Speak Old Elf yes so Yakum learn You know Ashlanders yes a little Yakum is Ashlander",
+            input =
+            "Ah. You understand me a bit, yes? Hello, %PCName. Yakum greet you. Bless and be blessed. Speak Old Elf, yes, so Yakum learn. You know @Ashlanders#, yes, a little. Yakum is Ashlander.",
+            expected =
+            "Ah You understand me a bit yes Hello %PCName Yakum greet you Bless and be blessed Speak Old Elf yes so Yakum learn You know Ashlanders yes a little Yakum is Ashlander",
         },
         {
-            input = "Good day, stranger. Welcome to @Ald'ruhn#. I'm the local caravaner, and I can tell you about @silt strider# travel if you'll tell me your @destination#. Are you new to @Ald'ruhn#, I would be happy to tell you about local @services#, or help you find @someone in particular#. Is there a @specific place# in @Ald'ruhn# you're looking for?",
-            expected = "Good day stranger Welcome to Ald'ruhn I'm the local caravaner and I can tell you about silt strider travel if you'll tell me your destination Are you new to Ald'ruhn I would be happy to tell you about local services or help you find someone in particular Is there a specific place in Ald'ruhn you're looking for",
+            input =
+            "Good day, stranger. Welcome to @Ald'ruhn#. I'm the local caravaner, and I can tell you about @silt strider# travel if you'll tell me your @destination#. Are you new to @Ald'ruhn#, I would be happy to tell you about local @services#, or help you find @someone in particular#. Is there a @specific place# in @Ald'ruhn# you're looking for?",
+            expected =
+            "Good day stranger Welcome to Ald'ruhn I'm the local caravaner and I can tell you about silt strider travel if you'll tell me your destination Are you new to Ald'ruhn I would be happy to tell you about local services or help you find someone in particular Is there a specific place in Ald'ruhn you're looking for",
         },
         {
             input = " a b   c  ",
@@ -269,7 +274,7 @@ do
         "I am %%name", -- false positive, but not bad
     }
     for i, value in ipairs(inputs) do
-        unitwind:test("Find %%Name (".. tostring(i).. ")", function()
+        unitwind:test("Find %%Name (" .. tostring(i) .. ")", function()
             local actual = masking.FindMacroName(value)
             unitwind:expect(actual).toBe(true)
         end)
@@ -282,7 +287,7 @@ do
         "I am %NAME, %class", -- false negative
     }
     for i, value in ipairs(inputs) do
-        unitwind:test("NOT Find %%Name (".. tostring(i).. ")", function()
+        unitwind:test("NOT Find %%Name (" .. tostring(i) .. ")", function()
             local actual = masking.FindMacroName(value)
             unitwind:expect(actual).toBe(false)
         end)
@@ -292,7 +297,8 @@ end
 do
     local testSource = {
         {
-            text = "'Ten-Tongues' does business with many adventurers -- hes and shes that run about the ruins down below. Now and then they find something nice, and they bring it to 'Ten-Tongues'. Maybe you are this kind of person? If so, you see people down there, look like poor helpless people with no home? Maybe they are, and maybe they aren't. Maybe they are the Black Dart Gang, and they surprise you, kill you dead *snap* like that with one poison dart, take your stuff, and goodbye to you forever.",
+            text =
+            "'Ten-Tongues' does business with many adventurers -- hes and shes that run about the ruins down below. Now and then they find something nice, and they bring it to 'Ten-Tongues'. Maybe you are this kind of person? If so, you see people down there, look like poor helpless people with no home? Maybe they are, and maybe they aren't. Maybe they are the Black Dart Gang, and they surprise you, kill you dead *snap* like that with one poison dart, take your stuff, and goodbye to you forever.",
             name = "'Ten-Tongues' Weerhat",
             expected = 0x2,
         },
@@ -302,7 +308,8 @@ do
             expected = 0x9,
         },
         {
-            text = "Greetings, %PCName. Does my form surprise you? As a witch of Glenmoril Wyrd, I have the ability to change my shape as suits my needs",
+            text =
+            "Greetings, %PCName. Does my form surprise you? As a witch of Glenmoril Wyrd, I have the ability to change my shape as suits my needs",
             name = "Ettiene of Glenmoril Wyrd",
             expected = 0x1,
         },
@@ -312,7 +319,8 @@ do
             expected = 0x0, -- should be 0x0, but case sensitive
         },
         {
-            text = "What? Yes. I'm Caius Cosades. But, what do you mean, you were told to \"Report to Caius Cosades\"? What are you talking about?",
+            text =
+            "What? Yes. I'm Caius Cosades. But, what do you mean, you were told to \"Report to Caius Cosades\"? What are you talking about?",
             name = "Caius Cosades",
             expected = 0x0, -- everything
         },
@@ -324,7 +332,7 @@ do
         -- TODO edge case
     }
     for i, value in ipairs(testSource) do
-        unitwind:test("Find Name (".. tostring(i).. ")", function()
+        unitwind:test("Find Name (" .. tostring(i) .. ")", function()
             local actual = masking.FindName(value.text, value.name)
             unitwind:expect(actual).toBe(value.expected)
         end)
@@ -544,7 +552,7 @@ unitwind:test("IsTarget NPC config", function()
     } ---@type Config.Filtering
     unitwind:expect(filtering.IsTarget(nil, f)).toBe(false)
     local actor = {
-        id = "jiub",     -- no listed
+        id = "jiub", -- no listed
         isEssential = true,
         persistent = true,
         isGuard = true,

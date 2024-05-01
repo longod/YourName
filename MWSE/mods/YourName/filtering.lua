@@ -137,45 +137,45 @@ local filter = {
     ["BM_werewolf_wildhunt4"] = false,
     ["werewolf_bearhunt"] = false,
     ["werewolf_ceremony"] = false,
-    ["bm_werewolf_wild01"] = false, -- Wandering Lunatic
-    ["bm_werewolf_wild02"] = false, -- Wandering Lunatic
-    ["bm_werewolf_wild03"] = false, -- Insane Wanderer
-    ["bm_werewolf_wild04"] = false, -- Insane Wanderer
-    ["bm_werewolf_wild05"] = false, -- Gibbering Lunatic
-    ["bm_werewolf_wild06"] = false, -- Gibbering Lunatic
-    ["bm_werewolf_wild07"] = false, -- Wandering Idiot
-    ["bm_werewolf_wild08"] = false, -- Confused Lunatic
-    ["bm_werewolf_wild09"] = false, -- Wandering Lunatic
+    ["bm_werewolf_wild01"] = false,      -- Wandering Lunatic
+    ["bm_werewolf_wild02"] = false,      -- Wandering Lunatic
+    ["bm_werewolf_wild03"] = false,      -- Insane Wanderer
+    ["bm_werewolf_wild04"] = false,      -- Insane Wanderer
+    ["bm_werewolf_wild05"] = false,      -- Gibbering Lunatic
+    ["bm_werewolf_wild06"] = false,      -- Gibbering Lunatic
+    ["bm_werewolf_wild07"] = false,      -- Wandering Idiot
+    ["bm_werewolf_wild08"] = false,      -- Confused Lunatic
+    ["bm_werewolf_wild09"] = false,      -- Wandering Lunatic
     ["bm_werewolf_wildernessC"] = false, -- Confused Lunatic
-    ["BM_werewolf_maze1"] = false, -- Hound of Hircine
-    ["wolfender_f_imperial"] = false, -- Female Imperial Innocent
-    ["wolfender_f_nord"] = false, -- Female Nord Innocent
-    ["wolfgiver_f_nord"] = false, -- Female Nord Innocent
+    ["BM_werewolf_maze1"] = false,       -- Hound of Hircine
+    ["wolfender_f_imperial"] = false,    -- Female Imperial Innocent
+    ["wolfender_f_nord"] = false,        -- Female Nord Innocent
+    ["wolfgiver_f_nord"] = false,        -- Female Nord Innocent
     -- Berserker
-    ["BM_berserker_f1"] = false, -- Berserker
-    ["BM_berserker_f1_lvl5"] = false, -- Berserker
-    ["BM_berserker_f2"] = false, -- Berserker
-    ["BM_berserker_f3"] = false, -- Berserker
-    ["BM_berserker_m1"] = false, -- Berserker
-    ["BM_berserker_m1_lvl5"] = false, -- Berserker
-    ["BM_berserker_m2"] = false, -- Berserker
-    ["BM_berserker_m3"] = false, -- Berserker
-    ["BM_berserker_f4"] = false, -- Berserker Denmother
+    ["BM_berserker_f1"] = false,         -- Berserker
+    ["BM_berserker_f1_lvl5"] = false,    -- Berserker
+    ["BM_berserker_f2"] = false,         -- Berserker
+    ["BM_berserker_f3"] = false,         -- Berserker
+    ["BM_berserker_m1"] = false,         -- Berserker
+    ["BM_berserker_m1_lvl5"] = false,    -- Berserker
+    ["BM_berserker_m2"] = false,         -- Berserker
+    ["BM_berserker_m3"] = false,         -- Berserker
+    ["BM_berserker_f4"] = false,         -- Berserker Denmother
     -- Berserker
-    ["bm_reaver_10"] = false, -- Reaver
-    ["bm_reaver_30"] = false, -- Reaver
-    ["bm_reaver_50"] = false, -- Reaver
-    ["bm_reaver_archer_10"] = false, -- Reaver
-    ["bm_reaver_archer_30"] = false, -- Reaver
-    ["bm_reaver_archer_50"] = false, -- Reaver
-    ["bm_smugglers_redguard"] = false, -- Smuggler
-    ["bm_smugglers_imperial"] = false, -- Smuggler
-    ["bm_smugglers_darkelf"] = false, -- Smuggler
-    ["bm_smugglers_darkelf_f"] = false, -- Smuggler
+    ["bm_reaver_10"] = false,            -- Reaver
+    ["bm_reaver_30"] = false,            -- Reaver
+    ["bm_reaver_50"] = false,            -- Reaver
+    ["bm_reaver_archer_10"] = false,     -- Reaver
+    ["bm_reaver_archer_30"] = false,     -- Reaver
+    ["bm_reaver_archer_50"] = false,     -- Reaver
+    ["bm_smugglers_redguard"] = false,   -- Smuggler
+    ["bm_smugglers_imperial"] = false,   -- Smuggler
+    ["bm_smugglers_darkelf"] = false,    -- Smuggler
+    ["bm_smugglers_darkelf_f"] = false,  -- Smuggler
     ["bm_smugglers_imperial_f"] = false, -- Smuggler
     ["bm_smugglers_redguard_f"] = false, -- Smuggler
-    ["bm_smugglers_woodelf"] = false, -- Smuggler
-    ["a smuggler boss"] = false, -- Smuggler Boss
+    ["bm_smugglers_woodelf"] = false,    -- Smuggler
+    ["a smuggler boss"] = false,         -- Smuggler Boss
     -- Thirsk Worker
     ["thirsk_build"] = false,
     ["thirsk_build_2"] = false,
@@ -241,7 +241,7 @@ local filter = {
     ["dremora_ttpc"] = true, -- Krazzt talks name?
     ["dremora_special_Fyr"] = false,
     ["golden saint_staada"] = false,
-    ["lustidrike"] = true, -- Lustidrike talks name?
+    ["lustidrike"] = true,    -- Lustidrike talks name?
     ["scamp_creeper"] = true, -- Creeper doesnt talk his name
     ["winged twilight_grunda_"] = false,
     ["ancestor_guardian_fgdd"] = false,
@@ -275,7 +275,7 @@ local filter = {
     ["bm_frost_giant"] = false,
     ["BM_udyrfrykte"] = false,
     ["draugr_valbrandr"] = false,
-    ["draugr_aesliip"] = true, -- Draugr Lord Aesliip talks name?
+    ["draugr_aesliip"] = true,          -- Draugr Lord Aesliip talks name?
     ["BM_riekling_Dulk_UNIQUE"] = true, -- Dulk
     ["BM_riekling_Krish_UNIQU"] = true, -- Krish talks name?
 }
@@ -322,7 +322,6 @@ function this.IsTarget(actor, config)
         local f = filter[memo.GetAliasedID(actor.id)]
         logger:trace("%s is a NPC in deny list: %s", actor.id, tostring(f))
         return (f == nil) or (f == true)
-
     elseif actor.objectType == tes3.objectType.creature and config.creature == true then
         if IsTargetByConfig(actor --[[@as tes3creature|tes3creatureInstance]], config) == false then
             return false
@@ -332,7 +331,6 @@ function this.IsTarget(actor, config)
         local f = filter[memo.GetAliasedID(actor.id)]
         logger:trace("%s is a creature in allow list: %s", actor.id, tostring(f))
         return (filter[memo.GetAliasedID(actor.id)] == true)
-
     end
     return false
 end

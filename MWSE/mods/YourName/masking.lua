@@ -47,7 +47,7 @@ function this.CreateMaskedName(name, mask, config)
     local masked = ""
     local count = 0
     for i, _ in ipairs(part) do
-        local b = bit.band(mask, bit.lshift(1, i-1))
+        local b = bit.band(mask, bit.lshift(1, i - 1))
         if b == 0 then
             -- join with cut combine character
             masked = masked .. part[i]:gsub("%+", " ") .. " "
@@ -58,7 +58,7 @@ function this.CreateMaskedName(name, mask, config)
     end
     masked = masked:trim()
     masked = masked:gsub("^%l", string.upper) -- first character lower to upper
-    masked = masked:gsub("^Of ", "") -- trim first Of
+    masked = masked:gsub("^Of ", "")          -- trim first Of
     --table.concat(part)
     logger:debug("Mask 0x%x to Name '%s' (%d)", mask, masked, count)
     if count == 0 then
@@ -72,8 +72,8 @@ end
 function this.PreprocessName(name)
     local n = name
     --n = n:lower()
-    n = n:gsub("^[\"']", "") -- quate head
-    n = n:gsub("[\"']$", "") -- quate tail
+    n = n:gsub("^[\"']", "")  -- quate head
+    n = n:gsub("[\"']$", "")  -- quate tail
     n = n:gsub(" [\"']", " ") -- quate middle
     n = n:gsub("[\"'] ", " ") -- quate middle
     n = n:gsub("^[Tt]he ", "")
@@ -90,11 +90,11 @@ end
 function this.PreprocessText(text)
     local t = text
     t = t:gsub("[%c!#%$&%(%)=%^~\\|@`%[%{;%+:%*%]%},<%.>/%?_]", "") -- escape %c (control) and %p (punctuation) exclude ' %
-    t = t:gsub("^[\"']", "") -- quate head
-    t = t:gsub("[\"']$", "") -- quate tail
-    t = t:gsub(" [\"']", " ") -- quate middle
-    t = t:gsub("[\"'] ", " ") -- quate middle
-    t = t:trim():gsub("%s+", " ") -- trim trailing white space
+    t = t:gsub("^[\"']", "")                                        -- quate head
+    t = t:gsub("[\"']$", "")                                        -- quate tail
+    t = t:gsub(" [\"']", " ")                                       -- quate middle
+    t = t:gsub("[\"'] ", " ")                                       -- quate middle
+    t = t:trim():gsub("%s+", " ")                                   -- trim trailing white space
     logger:trace("Preprocessed text: %s", t)
     return t
 end
@@ -134,7 +134,7 @@ function this.QueryUnknown(actor, config, updateTimestamp)
     if record ~= nil then
         -- test remember
         if config.skill and tes3.mobilePlayer and record.lastAccess then
-            if memo.TryRemember(tes3.mobilePlayer , record) == false then
+            if memo.TryRemember(tes3.mobilePlayer, record) == false then
                 logger:debug("Forget %s", actor.id)
                 local mask = this.CreateMask(actor.name)
                 record.mask = mask -- overwrite
@@ -190,7 +190,7 @@ end
 ---@return integer mask new mask
 function this.ContainName(text, fullname, unknown)
     if this.FindMacroName(text) then
-        logger:debug("Contain macreo name")
+        logger:debug("Contain macro name")
         return 0x0
     end
     local find = this.FindName(text, fullname)
@@ -199,4 +199,5 @@ function this.ContainName(text, fullname, unknown)
     logger:debug("Unknown %x & Find %x = %x", unknown, find, mask)
     return mask
 end
+
 return this

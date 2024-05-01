@@ -10,7 +10,7 @@ local function OnModConfigReady(e)
         label = settings.modName,
     })
     page.sidebar:createInfo({
-        text = "More important to ask the people you are talking to about their Background."
+        text = "How do you know the names of the people who live on an island you've never seen?"
     })
 
     page:createButton({
@@ -19,7 +19,7 @@ local function OnModConfigReady(e)
         description = "Erase from your memory all names of the people you have met.\nThis feature is in-game only.",
         callback = function()
             if require("YourName.memory").ClearMemory() then
-		        tes3.messageBox { message = "Succeeded in forgetting everyone's name.", buttons = { tes3.findGMST(tes3.gmst.sOK).value --[[@as string]] } }
+                tes3.messageBox { message = "Succeeded in forgetting everyone's name.", buttons = { tes3.findGMST(tes3.gmst.sOK).value --[[@as string]] } }
             end
         end,
         inGameOnly = true
@@ -28,11 +28,13 @@ local function OnModConfigReady(e)
     do
         local filter = page:createCategory({
             label = "Target Group",
-            description = "Control who it applies to. Also as a general rule, it does not apply to those who do not have unique names.",
+            description =
+            "Control who it applies to. Also as a general rule, it does not apply to those who do not have unique names.",
         })
         filter:createOnOffButton({
             label = "Essential",
-            description = "Applies to NPCs with the essential. Many of them will identify themselves, but it makes it more difficult to carry out quests involving persons who do not name themselves.",
+            description =
+            "Applies to people with the essential. Many of them will identify themselves, but it makes it more difficult to carry out quests involving persons who do not name themselves.",
             variable = mwse.mcm.createTableVariable({
                 id = "essential",
                 table = config.filtering,
@@ -40,7 +42,7 @@ local function OnModConfigReady(e)
         })
         filter:createOnOffButton({
             label = "Corpse",
-            description = "Applied to persistent corpses. You won't get names out of almost all of them.",
+            description = "Applied to persistent corpses. Dead men tell no tales.",
             variable = mwse.mcm.createTableVariable({
                 id = "corpse",
                 table = config.filtering,
@@ -48,7 +50,7 @@ local function OnModConfigReady(e)
         })
         filter:createOnOffButton({
             label = "Guard",
-            description = "Applies to guards. They name themselves as guards, but that doesn't mean much.",
+            description = "Applies to guards. They name themselves as guards, but that doesn't mean much. Or there are those who have a name but identify only as guards.",
             variable = mwse.mcm.createTableVariable({
                 id = "guard",
                 table = config.filtering,
@@ -56,7 +58,8 @@ local function OnModConfigReady(e)
         })
         filter:createOnOffButton({
             label = "No Lore",
-            description = "Applies to NPCs without the standard lore topics. Especially, they do not have Background topic, so you may not get their names.",
+            description =
+            "Applies to people without the standard lore topics. Especially they do not have Background topic, so you may not get their names.",
             variable = mwse.mcm.createTableVariable({
                 id = "nolore",
                 table = config.filtering,
@@ -64,7 +67,8 @@ local function OnModConfigReady(e)
         })
         filter:createOnOffButton({
             label = "Talking Creature",
-            description = "Applies to talking creatures. They are more likely than people to not be named. This includes special persons such as Vivec.",
+            description =
+            "Applies to talking creatures. They are more likely than people to not give their names. It includes special persons such as Vivec.",
             variable = mwse.mcm.createTableVariable({
                 id = "creature",
                 table = config.filtering,
@@ -108,8 +112,8 @@ local function OnModConfigReady(e)
         })
         skill:createOnOffButton({
             label = "Forget names over time",
-            description =[[Over time, you will forget names of people you have met.
-The duration of time a name can be remembered is determined by Speechcraft, Personality, Luck and Fatigue, and the higher these are, the harder it is to forget. However, the skill level is not increased by revealing names.
+            description = [[Over time, you will forget names of people you have met.
+The duration of time a name can be remembered is determined by Speechcraft, Personality, Luck and Fatigue, and the higher these are, the harder it is to forget. However, the skill level does not increase when you get the name out of people.
 By engaging with the person while you remember his or her name, you are less likely to forget it.
 If you have not seen the person for a while and have forgotten his or her name, you may be able to ask for it again.]],
             variable = mwse.mcm.createTableVariable({

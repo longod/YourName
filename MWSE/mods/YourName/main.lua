@@ -60,7 +60,7 @@ local function RefreshMenu(actor)
         end
     end
     -- possible not match id and pointing actor
---[[
+    --[[
 
     local help = tes3ui.findHelpLayerMenu(PartHelpMenu_main)
     if help then
