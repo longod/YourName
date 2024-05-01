@@ -18,6 +18,7 @@ local targetObject = nil
 ---@param source tes3uiElement
 ---@param actor tes3creature|tes3npc
 ---@param updateTimestamp boolean
+---@return boolean
 local function SetName(source, actor, updateTimestamp)
     local mask = masking.QueryUnknown(actor, config.game, updateTimestamp)
     if mask > 0 then
@@ -27,9 +28,12 @@ local function SetName(source, actor, updateTimestamp)
         else
             source.text = masking.CreateUnknownName(actor, config.masking)
         end
+        return true
     else
+        -- keep default
         --source.text = actor.name
     end
+    return false
 end
 
 ---@param source tes3uiElement
@@ -56,6 +60,7 @@ local function RefreshMenu(actor)
             local title = menu:findChild(PartDragMenu_title)
             if title then
                 UpdateName(title, actor)
+                menu:updateLayout()
             end
         end
     end
@@ -67,6 +72,7 @@ local function RefreshMenu(actor)
         local title = help:findChild(HelpMenu_name)
         if title then
             UpdateName(title, id, memory)
+            help:updateLayout()
         end
     end
 --]]
@@ -89,12 +95,16 @@ local function uiActivatedCallback(e)
         local title = e.element:findChild(PartDragMenu_title)
         if title then
             -- Besides having a conversation, accessing the container will update your memory, but it won't be a problem.
-            SetName(title, targetObject, true)
+            if SetName(title, targetObject, true) then
+                e.element:updateLayout()
+            end
         end
 
-        e.element:registerAfter(tes3.uiEvent.destroy, function(_)
-            targetObject = nil
-        end)
+        -- Counts are not retained, so if they are nested like dialog and barter, it will be disabled.
+        -- e.element:registerAfter(tes3.uiEvent.destroy,
+        -- function(_)
+        --     targetObject = nil
+        -- end)
     end
 end
 
@@ -109,7 +119,9 @@ local function uiObjectTooltipCallback(e)
     if filtering.IsTarget(actor, config.filtering) then
         local title = e.tooltip:findChild(HelpMenu_name)
         if title then
-            SetName(title, actor, false)
+            if SetName(title, actor, false) then
+                e.tooltip:updateLayout()
+            end
         end
     end
 end
@@ -179,6 +191,14 @@ local function infoGetTextCallback(e)
     end
 end
 
+--- @param e menuExitEventData
+local function menuExitCallback(e)
+    if targetObject then
+        logger:trace("Deactive: %s", targetObject.id)
+        targetObject = nil
+    end
+end
+
 --- @param e initializedEventData
 local function initializedCallback(e)
     event.register(tes3.event.uiActivated, uiActivatedCallback, { filter = "MenuBarter" })
@@ -186,7 +206,8 @@ local function initializedCallback(e)
     event.register(tes3.event.uiActivated, uiActivatedCallback, { filter = "MenuDialog" })
     event.register(tes3.event.uiObjectTooltip, uiObjectTooltipCallback)
     event.register(tes3.event.activate, activateCallback)
-    event.register(tes3.event.infoGetText, infoGetTextCallback) -- can be fileterd info
+    event.register(tes3.event.infoGetText, infoGetTextCallback)
+    event.register(tes3.event.menuExit, menuExitCallback)
 end
 event.register(tes3.event.initialized, initializedCallback)
 require("YourName.mcm")
