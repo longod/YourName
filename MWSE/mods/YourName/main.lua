@@ -201,12 +201,17 @@ end
 
 --- @param e initializedEventData
 local function initializedCallback(e)
-    event.register(tes3.event.uiActivated, uiActivatedCallback, { filter = "MenuBarter" })
-    event.register(tes3.event.uiActivated, uiActivatedCallback, { filter = "MenuContents" })
-    event.register(tes3.event.uiActivated, uiActivatedCallback, { filter = "MenuDialog" })
-    event.register(tes3.event.uiObjectTooltip, uiObjectTooltipCallback)
-    event.register(tes3.event.activate, activateCallback)
-    event.register(tes3.event.infoGetText, infoGetTextCallback)
+    -- Run later in order to keep a fixed order of execution with other mods.
+    -- I guess it will also be stable with mods that modify text that directly conflicts with it.
+    -- Somehow, even mods that don't seem to be related to each other seem to crash with the MWSE's API in some cases.
+    -- However, it is probably before the UI Expansion post-processing (-100).
+    local priority = -50
+    event.register(tes3.event.uiActivated, uiActivatedCallback, { filter = "MenuBarter", priority = priority })
+    event.register(tes3.event.uiActivated, uiActivatedCallback, { filter = "MenuContents", priority = priority })
+    event.register(tes3.event.uiActivated, uiActivatedCallback, { filter = "MenuDialog", priority = priority })
+    event.register(tes3.event.uiObjectTooltip, uiObjectTooltipCallback, { priority = priority })
+    event.register(tes3.event.activate, activateCallback, { priority = priority  })
+    event.register(tes3.event.infoGetText, infoGetTextCallback, { priority = priority })
     event.register(tes3.event.menuExit, menuExitCallback)
 end
 event.register(tes3.event.initialized, initializedCallback)
