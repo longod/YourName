@@ -30,7 +30,7 @@ local filter = {
     ["cattle_imp_f01"] = false,
     ["cattle_orc_m01"] = false,
     ["cattle_orc_f01"] = false,
-    -- Dead ~~
+    -- dead ~~
     -- ["dead random male"] = false,
     -- ["dead random female"] = false,
     -- ["dead de male"] = false,
@@ -58,11 +58,11 @@ local filter = {
     -- ["wizard dead 03"] = false,
     -- ["dead ordinator"] = false,
     -- ["dead ordinator_key"] = false,
-    -- ["Smuggler_Dead_01"] = false,
-    -- ["Smuggler_Dead_02"] = false,
-    -- ["Smuggler_Dead_03"] = false,
+    -- ["smuggler_dead_01"] = false,
+    -- ["smuggler_dead_02"] = false,
+    -- ["smuggler_dead_03"] = false,
     -- ["dead warlock"] = false,
-    -- Dreamer
+    -- dreamer
     ["dreamer"] = false,
     ["dreamer_f_01"] = false,
     ["dreamer_02"] = false,
@@ -71,24 +71,24 @@ local filter = {
     ["dreamer_04"] = false,
     ["dreamer_05"] = false,
     ["dreamer_06"] = false,
-    ["Dreamer_Talker"] = false,
-    ["Dreamer_Talker01"] = false,
-    ["Dreamer_Talker02"] = false,
-    ["Dreamer_Talker03"] = false,
-    ["Dreamer_Talker04"] = false,
-    ["Dreamer_Talker05"] = false,
-    ["Dreamer_Talker06"] = false,
-    ["Dreamer_Talker07"] = false,
-    ["Dreamer_Talker08"] = false,
-    ["Dreamer_Talker09"] = false,
-    ["Dreamer_Talker10"] = false,
-    ["Dreamer_Talker11"] = false,
-    ["Dreamer_Talker12"] = false,
-    -- Egg Miner
+    ["dreamer_talker"] = false,
+    ["dreamer_talker01"] = false,
+    ["dreamer_talker02"] = false,
+    ["dreamer_talker03"] = false,
+    ["dreamer_talker04"] = false,
+    ["dreamer_talker05"] = false,
+    ["dreamer_talker06"] = false,
+    ["dreamer_talker07"] = false,
+    ["dreamer_talker08"] = false,
+    ["dreamer_talker09"] = false,
+    ["dreamer_talker10"] = false,
+    ["dreamer_talker11"] = false,
+    ["dreamer_talker12"] = false,
+    -- egg miner
     ["miner_01"] = false,
     ["miner_02"] = false,
     ["miner_03"] = false,
-    -- Vampire
+    -- vampire
     ["berne vampire 1"] = false,
     ["berne vampire 2"] = false,
     ["berne vampire 3"] = false,
@@ -104,11 +104,11 @@ local filter = {
     ["aundae vampire 3"] = false,
     ["aundae vampire 4"] = false,
     ["aundae vampire 5"] = false,
-    -- Worshipper
+    -- worshipper
     ["mehrunesworshipper_m01"] = false,
     ["mehrunesworshipper_f01"] = false,
     ["mehrunesworshipper_m02"] = false,
-    -- Assassin
+    -- assassin
     ["db_assassin1"] = false,
     ["db_assassin2"] = false,
     ["db_assassin3"] = false,
@@ -116,25 +116,25 @@ local filter = {
     ["db_assassin1b"] = false,
     ["hels_assassin2"] = false,
     ["hels_assassin3"] = false,
-    -- Dark Brotherhood Apprentice
+    -- dark brotherhood apprentice
     ["db_assassin1c"] = false, -- Dark Brotherhood Apprentice
     ["db_assassin4a"] = false, -- Dark Brotherhood Assassin
     ["db_assassin1a"] = false, -- Dark Brotherhood Journeyman
     ["db_assassin2a"] = false, -- Dark Brotherhood Operator
     ["db_assassin3a"] = false, -- Dark Brotherhood Punisher
-    --- Warewolf
-    ["BM_werewolf_skaal1A3"] = false,
-    ["BM_werewolf_skaal1B3"] = false,
-    ["BM_werewolf_skaal1C3"] = false,
-    ["BM_werewolf_skaal1D3"] = false,
-    ["BM_werewolf_skaal1E3"] = false,
-    ["BM_werewolf_skaal1F3"] = false,
-    ["BM_werewolf_skaal1G3"] = false,
-    ["BM_werewolf_skaal2a"] = false,
-    ["BM_werewolf_wildhunt"] = false,
-    ["BM_werewolf_wildhunt2"] = false,
-    ["BM_werewolf_wildhunt3"] = false,
-    ["BM_werewolf_wildhunt4"] = false,
+    --- warewolf
+    ["bm_werewolf_skaal1a3"] = false,
+    ["bm_werewolf_skaal1b3"] = false,
+    ["bm_werewolf_skaal1c3"] = false,
+    ["bm_werewolf_skaal1d3"] = false,
+    ["bm_werewolf_skaal1e3"] = false,
+    ["bm_werewolf_skaal1f3"] = false,
+    ["bm_werewolf_skaal1g3"] = false,
+    ["bm_werewolf_skaal2a"] = false,
+    ["bm_werewolf_wildhunt"] = false,
+    ["bm_werewolf_wildhunt2"] = false,
+    ["bm_werewolf_wildhunt3"] = false,
+    ["bm_werewolf_wildhunt4"] = false,
     ["werewolf_bearhunt"] = false,
     ["werewolf_ceremony"] = false,
     ["bm_werewolf_wild01"] = false,      -- Wandering Lunatic
@@ -146,22 +146,22 @@ local filter = {
     ["bm_werewolf_wild07"] = false,      -- Wandering Idiot
     ["bm_werewolf_wild08"] = false,      -- Confused Lunatic
     ["bm_werewolf_wild09"] = false,      -- Wandering Lunatic
-    ["bm_werewolf_wildernessC"] = false, -- Confused Lunatic
-    ["BM_werewolf_maze1"] = false,       -- Hound of Hircine
+    ["bm_werewolf_wildernessc"] = false, -- Confused Lunatic
+    ["bm_werewolf_maze1"] = false,       -- Hound of Hircine
     ["wolfender_f_imperial"] = false,    -- Female Imperial Innocent
     ["wolfender_f_nord"] = false,        -- Female Nord Innocent
     ["wolfgiver_f_nord"] = false,        -- Female Nord Innocent
-    -- Berserker
-    ["BM_berserker_f1"] = false,         -- Berserker
-    ["BM_berserker_f1_lvl5"] = false,    -- Berserker
-    ["BM_berserker_f2"] = false,         -- Berserker
-    ["BM_berserker_f3"] = false,         -- Berserker
-    ["BM_berserker_m1"] = false,         -- Berserker
-    ["BM_berserker_m1_lvl5"] = false,    -- Berserker
-    ["BM_berserker_m2"] = false,         -- Berserker
-    ["BM_berserker_m3"] = false,         -- Berserker
-    ["BM_berserker_f4"] = false,         -- Berserker Denmother
-    -- Berserker
+    -- berserker
+    ["bm_berserker_f1"] = false,         -- Berserker
+    ["bm_berserker_f1_lvl5"] = false,    -- Berserker
+    ["bm_berserker_f2"] = false,         -- Berserker
+    ["bm_berserker_f3"] = false,         -- Berserker
+    ["bm_berserker_m1"] = false,         -- Berserker
+    ["bm_berserker_m1_lvl5"] = false,    -- Berserker
+    ["bm_berserker_m2"] = false,         -- Berserker
+    ["bm_berserker_m3"] = false,         -- Berserker
+    ["bm_berserker_f4"] = false,         -- Berserker Denmother
+    -- berserker
     ["bm_reaver_10"] = false,            -- Reaver
     ["bm_reaver_30"] = false,            -- Reaver
     ["bm_reaver_50"] = false,            -- Reaver
@@ -176,7 +176,7 @@ local filter = {
     ["bm_smugglers_redguard_f"] = false, -- Smuggler
     ["bm_smugglers_woodelf"] = false,    -- Smuggler
     ["a smuggler boss"] = false,         -- Smuggler Boss
-    -- Thirsk Worker
+    -- thirsk worker
     ["thirsk_build"] = false,
     ["thirsk_build_2"] = false,
     ["thirsk_build_3"] = false,
@@ -225,7 +225,7 @@ local filter = {
     ["dagoth endus"] = false,
     ["dagoth gilvoth"] = false,
     ["dagoth odros"] = false,
-    ["dagoth Tureynul"] = false,
+    ["dagoth tureynul"] = false,
     ["dagoth uthol"] = false,
     ["dagoth vemyn"] = false,
     ["guar_llovyn_unique"] = false,
@@ -239,7 +239,7 @@ local filter = {
     ["daedroth_menta_unique"] = false,
     ["dremora_ttmg"] = true, -- Anhaedra
     ["dremora_ttpc"] = true, -- Krazzt talks name?
-    ["dremora_special_Fyr"] = false,
+    ["dremora_special_fyr"] = false,
     ["golden saint_staada"] = false,
     ["lustidrike"] = true,    -- Lustidrike talks name?
     ["scamp_creeper"] = true, -- Creeper doesnt talk his name
@@ -250,8 +250,8 @@ local filter = {
     ["ancestor_mg_wisewoman"] = false,
     ["ancestor_ghost_vabdas"] = true, -- Mansilamat Vabdas talks name?
     ["wraith_sul_senipul"] = false,
-    ["Dahrk Mezalf"] = false,
-    ["skeleton_Vemynal"] = false,
+    ["dahrk mezalf"] = false,
+    ["skeleton_vemynal"] = false,
     ["worm lord"] = false,
     ---- tribunal
     ["almalexia"] = true,
@@ -261,23 +261,23 @@ local filter = {
     ["lich_profane_unique"] = false,
     ["lich_relvel"] = false,
     ["lich_barilzar"] = false,
-    ["ancestor_ghost_Variner"] = false,
+    ["ancestor_ghost_variner"] = false,
     ["dwarven ghost_radac"] = true, -- Radac Stungnthumz
     ["dremora_lord_khash_uni"] = false,
     ---- bloodmoon
     ["glenmoril_raven"] = true,
     ["glenmoril_raven_cave"] = true,
-    ["BM_hircine"] = true,
-    ["BM_hircine2"] = true,
-    ["BM_hircine_huntaspect"] = false,
-    ["BM_hircine_spdaspect"] = false,
-    ["BM_hircine_straspect"] = false,
+    ["bm_hircine"] = true,
+    ["bm_hircine2"] = true,
+    ["bm_hircine_huntaspect"] = false,
+    ["bm_hircine_spdaspect"] = false,
+    ["bm_hircine_straspect"] = false,
     ["bm_frost_giant"] = false,
-    ["BM_udyrfrykte"] = false,
+    ["bm_udyrfrykte"] = false,
     ["draugr_valbrandr"] = false,
     ["draugr_aesliip"] = true,          -- Draugr Lord Aesliip talks name?
-    ["BM_riekling_Dulk_UNIQUE"] = true, -- Dulk
-    ["BM_riekling_Krish_UNIQU"] = true, -- Krish talks name?
+    ["bm_riekling_dulk_unique"] = true, -- Dulk
+    ["bm_riekling_krish_uniqu"] = true, -- Krish talks name?
 }
 
 ---@param actor tes3creature|tes3creatureInstance|tes3npc|tes3npcInstance
@@ -319,7 +319,7 @@ function this.IsTarget(actor, config)
         end
 
         -- implicit true
-        local f = filter[memo.GetAliasedID(actor.id)]
+        local f = filter[memo.GetAliasedID(actor.id:lower())]
         logger:trace("%s is a NPC in deny list: %s", actor.id, tostring(f))
         return (f == nil) or (f == true)
     elseif actor.objectType == tes3.objectType.creature and config.creature == true then
@@ -328,9 +328,9 @@ function this.IsTarget(actor, config)
         end
 
         -- only special creatures
-        local f = filter[memo.GetAliasedID(actor.id)]
+        local f = filter[memo.GetAliasedID(actor.id:lower())]
         logger:trace("%s is a creature in allow list: %s", actor.id, tostring(f))
-        return (filter[memo.GetAliasedID(actor.id)] == true)
+        return (f == true)
     end
     return false
 end
